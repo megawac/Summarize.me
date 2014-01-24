@@ -1,0 +1,30 @@
+{
+    "node": true,
+    "browser": true,
+    "esnext": true,
+    "bitwise": true,
+    "camelcase": false,//api methods
+    "curly": false,
+    "eqeqeq": true,
+    "immed": true,
+    // "indent": 4, - let me indent as i please
+    "latedef": true,
+    "newcap": true,
+    "noarg": true,
+    "quotmark": "single",
+    "regexp": true,
+    "undef": true,
+    "unused": true,
+    "strict": true,
+    "trailing": true,
+    "smarttabs": false,
+
+    "globals": {
+        "jQuery": true,
+        "$": true,
+        "Q": true,
+        "Hogan": true,
+        "fallback": true,
+        "_": true
+    }
+}

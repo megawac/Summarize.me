@@ -2,12 +2,12 @@
     "node": true,
     "browser": true,
     "esnext": true,
+    "es3": true,
     "bitwise": true,
-    "camelcase": false,//api methods
+    "camelcase": false,
     "curly": false,
     "eqeqeq": true,
     "immed": true,
-    // "indent": 4, - let me indent as i please
     "latedef": true,
     "newcap": true,
     "noarg": true,
@@ -25,6 +25,7 @@
         "Q": true,
         "Hogan": true,
         "fallback": true,
-        "_": true
+        "_": true,
+        "ko": true
     }
 }

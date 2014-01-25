@@ -12,6 +12,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <link rel="stylesheet" href="css/summarize.css">
+    <link href='http://fonts.googleapis.com/css?family=Alegreya' rel='stylesheet' type='text/css'>
 
     <!--[if lt IE 9]>
         <script src="js/vendor/html5shiv.js"></script>
@@ -21,17 +22,190 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <!-- endbuild -->
 </head>
-    <body>
-
-    <div id="status">
-        <!-- Whether or not for hire based on github -->
-    </div>
+<body>
 
     <div id="resume" class="col-md-12 col-lg-8">
-        <!-- fill with compiled resume -->
+        <section>
+            <h1 data-bind="visible: $data.name, text: $data.name"></h1>
+            <h2 data-bind="visible: $data.title, text: $data.title"></h2>
+            <p data-bind="visible: $data.phone, text: $data.phone"></p>
+            <p data-bind="visible: $data.email, text: $data.email"></p>
+            <p data-bind="visible: $data.portfolio, text: $data.portfolio"></p>
+        </section>
+        
+        <section id="objective" data-bind="if: $data.objective">
+            <h1>Objective</h1>
+            <p data-bind="text: objective"></p>
+        </section>
+
+        <section id="skills" data-bind="if: $data.skills">
+            <h1>Skills / Languages</h1>
+            <ul class="double" data-bind="foreach: { data: skills, as: 'skill' }">
+                <li data-bind="text: skill"></li>
+            </ul>
+        </section>
+
+        <section id="frameworks" data-bind="if: $data.frameworks">
+            <h1>Frameworks &amp; Libraries</h1>
+            <ul class="double" data-bind="foreach: { data: frameworks, as: 'framework' }">
+                <li data-bind="text: framework"></li>
+            </ul>
+        </section>
+
+        <section id="projects" data-bind="if $data.projects">
+            <h1>Projects</h1>
+            <ul data-bind="foreach: { data: projects, as: 'project' }">
+                <li>
+                    <section>
+                        <ul>
+                            <li>
+                                <div class="label">Name:</div>
+                                <div class="content" data-bind="text: project.name"></div>
+                            </li>
+                            <li data-bind="if: project.technologies">
+                                <div class="label">Technologies:</div>
+                                <div class="content" data-bind="text: technologies"></div>
+                            </li>
+                            <li data-bind="if: project.description">
+                                <div class="label">Description:</div>
+                                <div class="content" data-bind="text: description"></div>
+                            </li>
+                        </ul>
+                    </section>
+                </li>
+            </ul>
+        </section>
+
+        <section id="experience" data-bind="if $data.experiences">
+            <h1>Experience</h1>
+            <ul data-bind="foreach: { data: experiences, as: 'job' }">
+                <li>
+                    <section>
+                        <ul>
+                            <li>
+                                <div class="label">Company</div>
+                                <div class="content" data-bind="text: company"></div>
+                            </li>
+                            <li>
+                                <div class="label">Title:</div>
+                                <div class="content" data-bind="text: title"></div>
+                            </li>
+                            <li>
+                                <div class="label">Tenure:</div>
+                                <div class="content"><span data-bind="text: startDate"></span> &ndash; <span data-bind="text: endDate"></span></div>
+                            </li>
+                            <li data-bind="if: job.link">
+                                <div class="label">Website:</div>
+                                <div class="content"><a data-bind="attr: { href: link }, text: link"></a></div>
+                            </li>
+                            <li data-bind="if: job.technologies">
+                                <div class="label">Technologies:</div>
+                                <div class="content" data-bind="text: technologies"></div>
+                            </li>
+                            <li data-bind="if: job.responsibilities">                        
+                                <div class="label">Responsibilities:</div>
+                                <div class="content" data-bind="text: responsibilities"></div>
+                            </li>
+                            <li data-bind="if: job.program">                    
+                                <div class="label">Achievements:</div>
+                                <div class="content" data-bind="text: achievements"></div>
+                            </li>
+                        </ul>
+                    </section>
+                </li>
+            </ul>
+        </section>
+
+        <section id="speaking" data-bind="if $data.speaking">
+            <h1>Speaking</h1>
+            <ul data-bind="foreach: { data: speaking, as: 'talk' }">
+                <li>
+                    <section>
+                        <ul>
+                            <li>
+                                <div class="label">Title:</div>
+                                <div class="content" data-bind="text: title"></div>
+                            </li>
+                            <li data-bind="if: talk.location">
+                                <div class="label">Location:</div>
+                                <div class="content" data-bind="text: location"></div>
+                            </li>
+                            <li data-bind="if: talk.link">
+                                <div class="label">Link:</div>
+                                <div class="content"><a data-bind="attr: { href: link }, text: link"></a></div>
+                            </li>
+                        </ul>
+                    </section>
+                </li>
+            </ul>
+        </section>
+
+        <section id="education" data-bind="if $data.education">
+            <h1>Education</h1>
+            <ul data-bind="foreach: { data: education, as: 'school' }">
+                <li>
+                    <section>
+                        <ul>
+                            <li>
+                                <div class="label">Institute:</div>
+                                <div class="content" data-bind="text: institute">University of Waterloo</div>
+                            </li>
+                            <li data-bind="if: school.program">
+                                <div class="label">Program:</div>
+                                <div class="content" data-bind="text: program">Geomatics with Computer Science minor</div>
+                            </li>
+                            <li>
+                                <div class="label">Dates Attended:</div>
+                                <div class="content"><span data-bind="text: startDate"></span> &ndash; <span data-bind="text: endDate"></span></div>
+                            </li>
+                            <li data-bind="if: school.achievements">
+                                <div class="label">Achievements:</div>
+                                <div class="content" data-bind="text: achievements"></div>
+                            </li>
+                        </ul>
+                    </section>
+                </li>
+            </ul>
+        </section>
     </div>
+
     <div id="summary" class="col-md-12 col-lg-4">
-        <!-- fill with compiled summary -->
+        <h2>Github Summary</h2>
+        <div data-bind="if user.hireable">
+            They're for rent
+        </div>
+        <div class="user-info" data-bind="with: $data.user">
+            <a data-bind="attr: { href: html_url }, text: name"></a> has <span data-bind="text: followers"></span> followers and <span data-bind="text: public_repos"></span> public repositiories on Github.
+        </div>
+        <div class="organizations" data-bind="if organizations.length > 0">
+
+        </div>
+        <div class="repos" data-bind="if repos.length > 0">
+            <ul data-bind="foreach: { data: repos, as: 'repo',
+                                    beforeRemove: $removing,
+                                    afterAdd: $appending }">
+                <li>
+                    <a data-bind="attr: { href: repo.html_url }, text: repo.name"></a>
+                    <span class="glyphicon glyphicon-star"></span><span data-bind="text: repo.stargazers_count"></span>
+                    <span class="glyphicon glyphicon-eye-open"></span><span data-bind="text: repo.subscribers_count"></span>
+                    <!-- ko if: repo.commits --><span class="glyphicon glyphicon-cloud-upload"></span><span data-bind="text: repo.commits"></span><!-- /ko -->
+                    <p data-bind="text: description"></p>
+                </li>
+            </ul>
+        </div>
+        <div class="contributions" data-bind="if pulls.length > 0">
+            <ul data-bind="foreach: { data: pulls, as: 'pull',
+                                    beforeRemove: $removing,
+                                    afterAdd: $appending }">
+                <li>
+                    <a data-bind="attr: { href: html_url }, text: name"></a>
+                    <span class="glyphicon glyphicon-star"></span><span data-bind="text: pull.stargazers_count"></span>
+                    <span class="glyphicon glyphicon-eye-open"></span><span data-bind="text: pull.subscribers_count"></span>
+                    <!-- ko if: pull.commits --><span class="glyphicon glyphicon-cloud-upload"></span><span data-bind="text: pull.commits"></span><!-- /ko -->
+                    <p data-bind="text: description"></p>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!--[if lt IE 7]>

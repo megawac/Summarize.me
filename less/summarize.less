@@ -1,1 +1,22 @@
+@mobile: mobile;
+@printing: print;
 
+body {
+    font-family: 'Alegreya', Georgia, serif; //http://www.google.com/fonts#QuickUsePlace:quickUse/Family:Tinos%7CGentium+Basic%7CAlegreya
+    // font-weight: 400; set by bs
+    margin: 0;
+    padding: 0;
+}
+
+@main_back: #DEDEDE;
+
+#summary {
+    page-break-before: always; //so printing seperates resume from github summary
+    background-color: @main_back;
+}
+
+@summary_back: #BDE1FC;
+
+#github {
+    background-color: @summary_back;
+}

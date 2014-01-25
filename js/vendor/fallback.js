@@ -1,60 +1,70 @@
 /* fallback.js v1.0.5 | https://github.com/dolox/fallback/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc.
  * Note, I slightly modified his script */
-
-(function(window) {
+(function (window, document, undefined) {
 	'use strict';
 
 	var fallback = {
-		callback: null,
+		// Callback storage from .ready and inline callback.
 		callbacks: [],
 
+		// Libraries that have completed/exhausted.
+		completed: {},
+		completed_count: 0,
+
+		// Page `head` element.
 		head: document.getElementsByTagName('head')[0],
 
+		// Libraries that are imported are stored here.
 		libraries: {},
 		libraries_count: 0,
 
-		loaded: {},
-		loaded_count: 0,
+		// Spawned libraries, so they don't run over themselves.
+		spawned: [],
 
-		fail: {},
-		fail_count: 0,
+		// Libraries that failed to load.
+		failed: {},
+		failed_count: 0,
 
-		shim: {}
+		// Shims that are imported are stored here.
+		shims: {},
+
+		// Libraries successfully loaded.
+		success: {},
+		success_count: 0
 	};
 
-	fallback.is_array = function(variable) {
-		if (variable instanceof Array) {
-			return true;
+	// Bootstrap our library.
+	fallback.bootstrap = function() {
+		var index, type;
+
+		for (index in fallback.utilities) {
+			type = fallback.utilities[index];
+			fallback.utility(type);
+		}
+	};
+
+	// Utility functions to check against variables.
+	fallback.utilities = ['Array', 'Function', 'Object', 'String'];
+
+	// Setup individual utility function.
+	fallback.utility = function(type) {
+		fallback['is_' + type.toLowerCase()] = function(variable) {
+			return Object.prototype.toString.call(variable) == '[object ' + type + ']';
+		};
+	};
+
+	// Check if our variable is a function, if not make it one.
+	fallback.callback = function(variable) {
+		var me = this;
+
+		if (!me.is_function(variable)) {
+			variable = function() {};
 		}
 
-		return false;
+		return variable;
 	};
 
-	fallback.is_defined = function(variable) {
-		/* jslint evil: true */
-		if (eval('window.' + variable)) {
-			return true;
-		}
-		
-		return false;
-	};
-
-	fallback.is_function = function(variable) {
-		if (({}).toString.call(variable) === '[object Function]') {
-			return true;
-		}
-
-		return false;
-	};
-
-	fallback.is_object = function(variable) {
-		if (typeof variable === 'object') {
-			return true;
-		}
-
-		return false;
-	};
-
+	// indexOf isn't supported on arrays in older versions of IE!
 	fallback.index_of = function(object, value) {
 		var index;
 
@@ -67,200 +77,429 @@
 		return -1;
 	};
 
-	fallback.initialize = function() {
+	// Check if our variable is defined.
+	fallback.is_defined = function(variable) {
+		try {
+			/*jslint evil: true*/
+			if (eval('window.' + variable)) {
+				return true;
+			}
+		} catch (exception) {
+			return false;
+		}
+		
+		return false;
+	};
+
+	// Import and cleanse libraries from user input.
+	fallback.importer = function(libraries, options) {
+		var me = this, current, index;
 		var library, urls;
+		var cleansed_shims, shim, shims, shim_libraries, shim_libraries_cleansed;
 
-		for (library in this.libraries) {
-			if (this.libraries[library]) {
-				urls = this.libraries[library];
+		// Cleanse the libraries.
+		var cleansed_libraries = {};
 
-				if (!this.is_array(urls)) {
-					this.libraries[library] = urls = [urls];
+		for (library in libraries) {
+			// URL list for each library.
+			urls = libraries[library];
+
+			// If `urls` is undefined, null or an empty string, skip, it's invalid.
+			if (!urls) {
+				continue;
+			}
+
+			// If `urls` is a string, convert it to any array.
+			if (me.is_string(urls)) {
+				urls = [urls];
+			}
+
+			// If `urls` is not an array, skip, it's invalid.
+			if (!me.is_array(urls)) {
+				continue;
+			}
+
+			// Check to see if the library already exists, if it does, merge the new URLs.
+			current = [];
+
+			if (me.is_array(me.libraries[library])) {
+				current = me.libraries[library];
+			}
+
+			cleansed_libraries[library] = urls;
+			me.libraries[library] = current.concat(urls);
+		}
+
+		// Cleanse the shims.
+		cleansed_shims = {};
+
+		if (me.is_object(options) && me.is_object(options.shim)) {
+			shims = options.shim;
+
+			for (shim in shims) {
+				shim_libraries = shims[shim];
+
+				// If `shim` doesn't exist in libraries, skip, it's invalid.
+				if (!me.libraries[shim]) {
+					continue;
 				}
 
-				this.libraries_count++;
+				// If `shim_libraries` is undefined, null or an empty string, skip, it's invalid.
+				if (!shim_libraries) {
+					continue;
+				}
 
-				if (!this.shim[library]) {
-					this.spawn(library, urls[0], 0);
+				// If `shim_libraries` is a string, convert it to any array.
+				if (me.is_string(shim_libraries)) {
+					shim_libraries = [shim_libraries];
+				}
+
+				// If `shim_libraries` is not an array, skip, it's invalid.
+				if (!me.is_array(shim_libraries)) {
+					continue;
+				}
+
+				// Check to make sure the libraries exist otherwise remove them.
+				shim_libraries_cleansed = [];
+
+				for (index in shim_libraries) {
+					library = shim_libraries[index];
+
+					// Make sure the library actually exists and that it's not itself.
+					if (me.libraries[library] && library !== shim) {
+						shim_libraries_cleansed.push(library);
+					}
+				}
+
+				// Check to see if the shim already exists, if it does, merge the new shims.
+				current = [];
+
+				if (me.is_array(me.shims[shim])) {
+					current = me.shims[shim];
+				}
+
+				cleansed_shims[shim] = shim_libraries_cleansed;
+				me.shims[shim] = current.concat(shim_libraries_cleansed);
+			}
+		}
+
+		return {
+			libraries: cleansed_libraries,
+			shims: cleansed_shims
+		};
+	};
+
+	// CSS check if selector exists.
+	fallback.css = {};
+
+	fallback.css.check = function(selector) {
+		var me = fallback;
+
+		if (!document.styleSheets) {
+			return false;
+		}
+
+		var index, stylesheet, found;
+
+		for (index in document.styleSheets) {
+			stylesheet = document.styleSheets[index];
+
+			if (stylesheet.rules) {
+				found = me.css.scan(stylesheet.rules, selector);
+
+				if (found) {
+					return found;
+				}
+			}
+
+			if (stylesheet.cssRules) {
+				found = me.css.scan(stylesheet.cssRules, selector);
+
+				if (found) {
+					return found;
 				}
 			}
 		}
+
+		return false;
 	};
 
-	fallback.completed = function() {
-		this.ready_invocation();
+    fallback.css.scan = function(ruleset, selector) {
+		var index, rule;
 
-		if (this.libraries_count === this.loaded_count + this.fail_count) {
-			if (this.is_function(this.callback)) {
-				this.callback(this.loaded, this.fail);
+		for (index in ruleset) {
+			rule = ruleset[index];
+
+			if (rule.selectorText === selector) {
+				return true;
 			}
-
-			this.callback = null;
-		}
-	};
-
-	fallback.error = function(library, index) {
-		index = parseInt(index,0);
-
-		if (!this.fail[library]) {
-			this.fail[library] = [];
 		}
 
-		this.fail[library][this.fail[library].length] = this.libraries[library][index];
+		return false;
+    };
 
-		if (index < this.libraries[library].length - 1) {
-			this.spawn(library, this.libraries[library][index + 1], index + 1);
-		} else {
-			this.fail_count++;
-		}
-
-		this.completed();
-	};
-
+	// Spawn an instance of the library.
 	fallback.load = function(libraries, options, callback) {
-		if (this.is_function(options)) {
+		var me = this;
+		var imported, library, urls;
+
+		// If `libraries` is not a object, die out.
+		if (!me.is_object(libraries)) {
+			return false;
+		}
+
+		// If `options` is a function, then it needs to become the callback.
+		if (me.is_function(options)) {
 			callback = options;
 			options = {};
 		}
 
-		if (!this.is_object(options)) {
+		// If `options` is not an object, convert it.
+		if (!me.is_object(options)) {
 			options = {};
 		}
 
-		if (options.shim) {
-			this.shim = options.shim;
+		// Import libraries.
+		imported = me.importer(libraries, options);
+
+		// Spawn library instances from user input.
+		for (library in imported.libraries) {
+			urls = imported.libraries[library];
+
+			if (!me.shims[library]) {
+				me.spawn(library, urls);
+			}
 		}
 
-		if (!this.is_function(callback)) {
-			callback = function() {};
+		// Fork the callback over to the `ready` function.
+		if (me.is_function(callback)) {
+			me.ready([], callback);
 		}
-
-		this.callback = callback;
-		this.libraries = libraries;
-		this.initialize();
 	};
 
+	// Callback array of objects.
 	fallback.ready = function(libraries, callback) {
-		var options = {
-			callback: callback,
-			libraries: libraries
-		};
+		var me = this;
+		var index, library;
 
-		if (!this.is_array(libraries)) {
-			options.callback = libraries;
-			options.libraries = [];
+		if (me.is_function(libraries)) {
+			callback = libraries;
+			libraries = [];
+		} else {
+			if (!me.is_array(libraries) || me.is_string(libraries)) {
+				libraries = [libraries];
+			}
+
+			for (index in libraries) {
+				library = libraries[index];
+
+				if (me.libraries[library] && !me.shims[library]) {
+					me.spawn(library, me.libraries[library]);
+				}
+			}
 		}
 
-		this.callbacks[this.callbacks.length] = options;
-		this.ready_invocation();
+		me.callbacks.push({
+			callback: me.callback(callback),
+			libraries: libraries
+		});
+
+		return me.ready_invocation();
 	};
 
+	// Invoke any `ready` callbacks.
 	fallback.ready_invocation = function() {
-		var index, options, count, library, wipe;
+		var me = this, index, count, library, wipe, payload, processed = [], callbacks = [];
 
-		for (index in this.callbacks) {
-			if (this.is_object(this.callbacks[index])) {
-				options = this.callbacks[index];
-				wipe = false;
+		for (index in me.callbacks) {
+			// If callback is not an object, skip and remove it;
+			payload = me.callbacks[index];
 
-				if (options.libraries.length > 0) {
-					count = 0;
+			if (!me.is_object(payload) || !me.is_array(payload.libraries) || !me.is_function(payload.callback)) {
+				continue;
+			}
 
-					for (library in this.loaded) {
-						if (this.index_of(options.libraries, library) >= 0) {
-							count++;
-						}
+			wipe = false;
+
+			if (payload.libraries.length > 0) {
+				count = 0;
+
+				for (library in me.success) {
+					if (me.index_of(payload.libraries, library) >= 0) {
+						count++;
 					}
+				}
 
-					if (count === options.libraries.length) {
-						options.callback();
-						wipe = true;
-					}
-				} else if (this.libraries_count === this.loaded_count + this.fail_count) {
-					options.callback(this.loaded, this.fail);
+				if (count === payload.libraries.length) {
 					wipe = true;
 				}
+			} else if (me.libraries_count === me.success_count + me.failed_count) {
+				wipe = true;
+			}
 
-				if (wipe) {
-					delete this.callbacks[index];
+			if (wipe) {
+				callbacks.push(payload.callback);
+			} else {
+				processed.push(me.callbacks[index]);
+			}
+		}
+
+		me.callbacks = processed;
+
+		// We need to process the callbacks here that way they can run in parallel as well in nested callbacks and not get caught in a endless loop.
+		for (index in callbacks) {
+			callbacks[index](me.success, me.failed);
+		}
+	};
+
+	// Invoke any `shim` dependencies.
+	fallback.shim_invocation = function() {
+		var me = this;
+		var count, index, shim, shimming;
+
+		for (shim in me.shims) {
+			shimming = me.shims[shim];
+
+			// If there are no shims, or the if the shim is already loaded, skip it.
+			if (!shimming || me.success[shim]) {
+				continue;
+			}
+
+			// Reset our counter back to 0.
+			count = 0;
+
+			// Iterate through shim dependencies and find out of all dependencies for shim were loaded.
+			for (index in shimming) {
+				if (me.success[shimming[index]]) {
+					count++;
 				}
+			}
+
+			// If all dependencies were loaded, spawn the shim.
+			if (count === shimming.length) {
+				me.spawn(shim, me.libraries[shim]);
+
+				// Remove the shim from shim list that way it doesn't try to load it again.
+				delete me.shims[shim];
 			}
 		}
 	};
 
-	fallback.spawn = function(library, url, index) {
-		var element;
+	// Initialize the spawning of a library.
+	fallback.spawn = function(library, urls) {
+		var me = this;
 
-		if (this.is_defined(library)) {
-			return fallback.success(library, index);
+		// Library is already attempting to be loaded.
+		if (me.index_of(me.spawned, library) !== -1) {
+			return false;
 		}
 
-		if (url.indexOf('.css') > -1) {
+		me.libraries_count++;
+		me.spawned.push(library);
+
+		return me.spawn.instance(library, urls);
+	};
+
+	// Spawn a url from the library.
+	fallback.spawn.instance = function(library, urls) {
+		var me = fallback;
+		var element;
+		var type = 'js';
+
+		var payload = {
+			library: library,
+			spawned: true,
+			url: urls.shift(),
+			urls: urls
+		};
+
+		if (payload.url.indexOf('.css') > -1) {
+			type = 'css';
+
+			// CSS selector already exists, do not attempt to spawn library.
+			if (me.css.check(library)) {
+				payload.spawned = false;
+				return me.spawn.success(payload);
+			}
+
 			element = document.createElement('link');
 			element.rel = 'stylesheet';
-			element.href = url;
+			element.href = payload.url;
 		} else {
+			// JavaScript variable already exists, do not attempt to spawn library
+			if (me.is_defined(library)) {
+				payload.spawned = false;
+				return me.spawn.success(payload);
+			}
+
 			element = document.createElement('script');
-			element.src = url;
+			element.src = payload.url;
 		}
 
 		element.onload = function() {
-			fallback.success(library, index);
+			// Checks for JavaScript library.
+			if (type === 'js' && !me.is_defined(library)) {
+				return me.spawn.failed(payload);
+			}
+
+			return me.spawn.success(payload);
 		};
 
 		element.onreadystatechange = function() {
 			if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
 				this.onreadystatechange = null;
 
-				if (!fallback.is_defined(library)) {
-					fallback.error(library, index);
-				} else {
-					fallback.success(library, index);
+				if (type === 'js' && !me.is_defined(library)) {
+					return me.spawn.failed(payload);
 				}
+
+				return me.spawn.success(payload);
 			}
 		};
 
 		element.onerror = function() {
-			fallback.error(library, index);
+			return me.spawn.failed(payload);
 		};
 
-		this.head.appendChild(element);
+		return me.head.appendChild(element);
 	};
 
-	fallback.success = function(library, index) {
-		this.loaded[library] = this.libraries[library][index];
-		this.loaded_count++;
+	// Spawn failure callback.
+	fallback.spawn.failed = function(payload) {
+		var me = fallback;
+		payload.spawned = false;
 
-		if (this.shim) {
-			this.shim_invocation(library);
+		if (!me.failed[payload.library]) {
+			me.failed[payload.library] = [];
 		}
 
-		this.completed();
-	};
+		me.failed[payload.library].push(payload.url);
 
-	fallback.shim_invocation = function() {
-		var count, index, shim, shimming;
-
-		for (shim in this.shim) {
-			if (this.shim[shim]) {
-				shimming = this.shim[shim];
-				count = 0;
-
-				if (!this.loaded[shim]) {
-					for (index in shimming) {
-						if (this.loaded[shimming[index]]) {
-							count++;
-						}
-					}
-
-					if (count === shimming.length) {
-						this.spawn(shim, this.libraries[shim][0], 0);
-						delete this.shim[shim];
-					}
-				}
-			}
+		// All URLs for the library have exhausted.
+		if (!payload.urls.length) {
+			me.failed_count++;
+			return me.ready_invocation();
 		}
+
+		// Attempt to spawn another URL.
+		return me.spawn.instance(payload.library, payload.urls);
 	};
 
+	// Spawn success callback.
+	fallback.spawn.success = function(payload) {
+		var me = fallback;
+
+		// Mark the library and url as successful.
+		me.success[payload.library] = payload.url;
+		me.success_count++;
+
+		// Invoke any `shim` dependencies.
+		me.shim_invocation();
+
+		// Invoke any `ready` callbacks.
+		return me.ready_invocation();
+	};
+
+	fallback.bootstrap();
 	window.fallback = fallback;
-})(window);
+})(window, document, undefined);

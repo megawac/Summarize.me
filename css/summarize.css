@@ -1,0 +1,12 @@
+body {
+  font-family: 'Alegreya', serif;
+  margin: 0;
+  padding: 0;
+}
+#summary {
+  page-break-before: always;
+  background-color: #dedede;
+}
+#github {
+  background-color: #bde1fc;
+}

@@ -1,1 +1,4 @@
-For now we expect the page to be run on github and don't provide methods for running off the domain
+Summarize.me
+=============
+
+A JSON resume generator and Github summarizer using a given `resume.json` file and some Github API calls.

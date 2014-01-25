@@ -23,7 +23,7 @@
         "exclude repos": ["cdnjs", "jsdelivr"]//repos to exclude by repo name
     },
 
-    //if any of these are set to a falsy value we'll use the one retrieved from github
+    //most of these are optional beside some of the obvious
     "name" : "Homer Jay Simpson",
     "contact" : "chunkylover53@aol.com",
     "title" : "Safety Inspector",
@@ -54,13 +54,13 @@
             "description" : "Helped Bart build a boxcar racer, but Martin's was better."
         }
     ],
-    "experience" : [
+    "experiences" : [
         {
             "company" : "Springfield Nuclear",
             "link" : "",
             "title" : "Safety Inspector",
             "startDate" : "1989",
-            "endDate" : "Present",
+            "endDate" : "present",
             "responsibilities" : "Build high quality web applications using JavaScript, Java, ColdFusion for our clients. I also evaluate and educate the development team on new techniques and technologies. High-level application design including technologies, frameworks, and coding practices.",
             "achievements" : "Introduced unit testing, continuous integration, source control, and development best practices to the team.  Started the Lunch and Learn program where team members teach each other new technologies and techniques. Lead development teams of up to 5 developers on profitable development projects."
         }
@@ -74,8 +74,8 @@
     ],
     "education" : [
         {
-            "school" : "Springfield University",
-            "startDate" : "1993",
+            "institute" : "Springfield University",
+            "startDate" : "1991",
             "endDate" : "1993",
             "program" : "Nuclear Physics",
             "achievements" : "Ran over dean with car, kidnapped Sir Oinks-a-lot."

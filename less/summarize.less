@@ -1,22 +1,127 @@
-@mobile: mobile;
-@printing: print;
+@import "bootstrap/variables.less";
 
+//vars
+@main_back: #F0F3F5;
+@summary_back: saturate(@main_back, 20%);
+
+@info_inset: 12px;//offset left
+@mbot: 2px;
+
+@focus_txt_size: 1.2em;
+
+//general
 body {
-    font-family: 'Alegreya', Georgia, serif; //http://www.google.com/fonts#QuickUsePlace:quickUse/Family:Tinos%7CGentium+Basic%7CAlegreya
-    // font-weight: 400; set by bs
+    background-color: @main_back;
+}
+
+.resume, .summary { 
+    ul {
+        list-style-type: none;
+    }
+
+    a {
+        color: darken(@text-color, 15%); //dont make links blue
+    }
+}
+
+//Resume stuff
+.resume {
+    h2 {
+        margin: 7px 0 5px;
+    }
+
+    #job-field {
+        margin-top: -.5em;
+        margin-left:  @info_inset;
+        margin-bottom: @mbot;
+    }
+
+    .res-info {
+        font-size: @focus_txt_size;
+        margin-bottom: 2px;
+        margin-left: @info_inset;
+    }
+
+    .proj-name {
+        font-size: @focus_txt_size;
+    }
+}
+
+#resume {
+    dt {
+        width: 110px;
+    }
+    dd {
+        margin-left: 130px;
+        padding-top: 1px;//alignment fix for expected font
+    }
+}
+
+#skills, #frameworks {
+    ul {
+        font-size: @focus_txt_size;
+        max-width: 1000px;
+    }
+}
+
+
+//Github summary stuff
+#summary {
+    page-break-before: always; //so printing seperates resume from github summary
+    background-color: @summary_back;
+    box-shadow: -2px 2px 3px 2px #96A2A3;
+}
+
+.summary {
+    .user-info {
+        font-size: @focus_txt_size;
+    }
+    .repo-name {
+        font-size: @focus_txt_size;
+        vertical-align: middle;
+        margin-right: 4px;
+    }
+    .stats {
+        display: inline;
+        span {
+            margin: 0 1px;
+            color: lighten(@text-color, 10%)
+        }
+        .glyphicon {
+            margin-right: 1px;
+        }
+    }
+}
+
+//utils
+.non-content {//mainly for lists with nested lists
     margin: 0;
     padding: 0;
 }
 
-@main_back: #DEDEDE;
-
-#summary {
-    page-break-before: always; //so printing seperates resume from github summary
-    background-color: @main_back;
+.reactive-list {
+    overflow: hidden;
 }
 
-@summary_back: #BDE1FC;
+.reactive-list li {
+    float: left;
+    width: 100%;
+}
 
-#github {
-    background-color: @summary_back;
+// @media (min-width: @screen-xs-min) {
+//     .reactive-list li {
+//         width: 100%;
+//     }
+// }
+
+@media (min-width: @screen-sm-min) {
+    .reactive-list li {
+        width: 49%;
+    }
+}
+
+@media (min-width: @screen-md-min) {
+    .reactive-list li {
+        width: 33%;
+    }
 }

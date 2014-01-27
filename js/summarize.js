@@ -17,15 +17,22 @@ fallback.ready(function() {
 
     var gitSettings;
 
+    var isURL = function(link) {
+        var idx = link.indexOf('//');
+        return idx !== -1 && idx <= 8;
+    };
+    var urlify = function(link, def) {//appends // or https to a link if not there
+        return isURL(link, def) ? link : (def || '//') + link;
+    };
+
+
     /*********************************
      * Resource fetching and API calls
      *********************************/
     var GITHUB_API = 'https://api.github.com/';
-    var API_TOKEN = '';//Application api token
+    var API_TOKEN = 'access_token=7806bcbf05bc6c9c7ebc74e9d893257b7de6a5a3';//Application api token
     var $gitGet = function(url, data) {
-        if(url.indexOf('https://') !== 0) {//doesnt start with https://
-            url = GITHUB_API + (url.charAt(0) === '/' ? url.slice(1) : url);//so i dont fuck up-
-        }
+        url = urlify(url, GITHUB_API);
 
         if(typeof data === 'object') {//do a custom encode to allow special characters eg x:y
             data = $.map(data, function(val, prop) {
@@ -73,7 +80,7 @@ fallback.ready(function() {
             $gitGet('search/issues', {
                 //get all closed pull requests from github user. We will have to check each PR to see if its merged and check commits
                 q: 'type:pr+state:closed+author:' + gitSettings.user,
-                per_page: 100,//100 most recent pulls (exemplar zenorocha)
+                per_page: 100, //100 most recent pulls (exemplar zenorocha)
                 page: 1 //todo find way back pulls (when total_count > 100)
             })
         );
@@ -82,14 +89,17 @@ fallback.ready(function() {
         userInfo = userInfo[0];
         organizations = organizations[0];
         var repos = _.filter(repoInfo[0], function(repo) {
-            return !repo.fork || repo.stargazers_count > 0 || repo.subscribers_count > 0;
+            return !_.contains(gitSettings['exclude repos'], repo.name) && (!repo.fork || repo.stargazers_count > 0 || repo.subscribers_count > 0);
         });
         _.each(repos, function(repo) {
-            $.when($gitGet(repo.url), $gitGet(repo.contributors_url))
-            .then(function(repoInfo, contribs) {
+            $.when(
+                $gitGet(repo.url),
+                $gitGet(repo.contributors_url)
+            ).then(function(repoInfo, contribs) {
+                var contrib = _.findWhere(contribs[0], {login: gitSettings.user});
                 githubModel.updateRepo(repo, {
                     subscribers_count: repoInfo[0].subscribers_count, //this is stupid. Can't get watchers from <user>/repos
-                    commits: _.findWhere(contribs[0], {login: gitSettings.user}).contributions
+                    commits: contrib && contrib.contributions || 0
                 });
             });//may 404 for repos with no commits
         });
@@ -182,10 +192,16 @@ fallback.ready(function() {
      * Set up the views
      *********************************/
 
-    var DEFAULT_REPO = {
-        subscribers_count: 1,
-        stargazers_count: 0,
-        commits: 1
+    var processRepo = function(repo) {
+        _.each({//default settings
+            subscribers_count: 1,
+            stargazers_count: 0,
+            commits: 1
+        }, function(def, key) {
+            if(!(key in repo)) repo[key] = def;
+        });
+        repo.commitsURL = repo.html_url + '/commits?author=' + gitSettings.user;
+        return repo;
     };
 
     function Model(name) {
@@ -198,7 +214,7 @@ fallback.ready(function() {
         },
 
         $appending: function(element) {
-            $(element).fadeIn();
+            $(element).hide().fadeIn();
         },
 
         $removing: function(element) {
@@ -209,12 +225,25 @@ fallback.ready(function() {
     function GithubModel(info) {
         var model = new Model('summary');
 
-        var repos = model.repos = ko.observableArray(_.map(info.repos, function(repo) {
-            return ko.observable(_.extend({}, DEFAULT_REPO, repo));
+        var repos = ko.observableArray(_.map(info.repos, function(repo) {
+            return ko.observable(processRepo(repo));
         }));
-        var pulls = model.pulls = ko.observableArray();
-        model.organizations = ko.observableArray(info.organizations);
+        var pulls = ko.observableArray();
+        var orgs = ko.observableArray(info.organizations);
+
         model.user = info.user;
+
+        model.repos = ko.computed(function() {
+            return repos.slice(0, gitSettings['max repos']);
+        }, repos);
+
+        model.pulls = ko.computed(function() {
+            return pulls.slice(0, gitSettings['max contributions']);
+        }, pulls);
+
+        window.orgs = model.organizations = ko.computed(function() {
+            return orgs.slice(0, gitSettings['max organizations']);
+        }, orgs);
 
         model.updateRepo = function(repo, updated) {
             var obs = _.find(repos(), function(r) {return r() === repo;});//find repo's obserable
@@ -223,7 +252,7 @@ fallback.ready(function() {
         };
 
         model.addPull = function(pr) {
-            pulls.push(_.extend({}, DEFAULT_REPO, pr));
+            pulls.push(processRepo(pr));
             sortRepos(pulls, gitSettings['sort pull weights']);
         };
 
@@ -235,7 +264,14 @@ fallback.ready(function() {
     function ResumeModel(resume) {
         var model = new Model('resume');
 
-        _.extend(model, resume);
+        _.extend(model, {
+            portfolioLink: ko.computed(function() {
+                return urlify(resume.portfolio);
+            }),
+            contactLink: ko.computed(function() {
+                return 'mailto:' + resume.contact;
+            })
+        }, resume);
 
         return model.update();
     }

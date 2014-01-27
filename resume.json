@@ -20,65 +20,97 @@
             "activity": 0
         }, //How to sort your pull requests (latest 100). Valid options are ["stars", "commits", "activity"]
 
-        "exclude repos": ["cdnjs", "jsdelivr"]//repos to exclude by repo name
+        "max organizations": 10,
+        "max contributions": 6,
+        "max repos": 6,
+
+        "exclude repos": ["cdnjs", "jsdelivr", "megawac.github.io"]//repos to exclude by repo name
     },
 
     //most of these are optional beside some of the obvious
-    "name" : "Homer Jay Simpson",
-    "contact" : "chunkylover53@aol.com",
-    "title" : "Safety Inspector",
-    "objective" : "To be happy.",
-    "aboutme" : "I love beer, doughnuts, and all things fried.",
-    "social" : [
+    "name": "Graeme J. Yeates",
+    "title": "Web Developer/GIS Specialist",
+    "phone": "(647) 215-7372",
+    "contact": "gjyeates@uwaterloo.ca",
+    "portfolio": "www.github.com/megawac",
+    "objective": "Geographic information systems (GIS) internship that allows me to integrate my knowledge of web development and databases with my skills in GIS.",
+    "aboutme": "I am a passionate developer and enjoy working on active projects with others who are enthusiastic about their work.",
+    "social": [
         {
-            "link" : "http://www.linkedin.com/in/homerjsimpson",
-            "name" : "LinkedIn"
+            "link": "https://github.com/megawac",
+            "name": "github.com/megawac"
         },
         {
-            "link" : "https://twitter.com/HomerJSimpson",
-            "name" : "twitter"
-        }
-    ],
-    "skills" : [
-        "Eating",
-        "Sleeping",
-        "Bowling"
-    ],
-    "frameworks" : [
-        "D'oh! What's a framework?"
-    ],
-    "projects" : [
+            "link": "mail://gjyeates@uwaterloo.ca",
+            "name": "gjyeates@uwaterloo.ca"
+        },
         {
-            "name" : "Boxcar Racer",
-            "technologies" : "wood, and plastic",
-            "description" : "Helped Bart build a boxcar racer, but Martin's was better."
+            "link": "tel://6472157372",
+            "name": "(647) 215-7372"
         }
     ],
-    "experiences" : [
+    "skills": [
+        "JavaScript/Node.js", "HTML5", "CSS3", "ESRI ArcGIS", "SQL", "Python", "Java", "ASP.NET with VB & C#", "GIT & TFS Source Control"
+    ],
+    "frameworks": [
+        "Mootools", "jQuery", "dojo", "ArcGIS SDKs", "Python Twisted", "Express.js", "Socket.io", "Grunt", "Twitter Bootstrap"
+    ],
+    "projects": [
         {
-            "company" : "Springfield Nuclear",
-            "link" : "",
-            "title" : "Safety Inspector",
-            "startDate" : "1989",
-            "endDate" : "present",
-            "responsibilities" : "Build high quality web applications using JavaScript, Java, ColdFusion for our clients. I also evaluate and educate the development team on new techniques and technologies. High-level application design including technologies, frameworks, and coding practices.",
-            "achievements" : "Introduced unit testing, continuous integration, source control, and development best practices to the team.  Started the Lunch and Learn program where team members teach each other new technologies and techniques. Lead development teams of up to 5 developers on profitable development projects."
+            "name": "MutationObserver.js",
+            "technologies": "QUnit, Grunt, Travis CI, PhantomJS, Sauce Labs",
+            "description": "Created a (reasonably) compliant and well optimized shim of the HTML5 MutationObserver using a novel tree reconciliation algorithm. Created 50+ QUnit tests for the polyfill."
+        },
+        {
+            "name": "QwebIRC",
+            "technologies": "Mootools, Twitter Bootstrap, Epitome MVC, Handlebars, Grunt, socket.io, underscore, CSS3, HTML5",
+            "description": "QwebIRC is a free, open source AJAX instant relay chat (IRC) client designed to be simple, feature-rich, and intuitive. I've improved the extensibility and functionality of the original QwebIRC project by abstracting the browser hacks to frameworks and modules, rewriting the entire user interface (UI) in templated Views, decoupling of the IRC client from the UI and making the code DRY by extending the utility module. The changes have removed unnessary relationships and made adding features less trivial."
+        },
+        {
+            "name": "Node WebIRC",
+            "technologies": "socket.io, Express, underscore",
+            "description": "An IRC Connection backend for the QwebIRC AJAX client. This project is responsible for serving files to the AJAX client and establishing IPv4 or IPv6 connections to a set IRC server and serve data via socket.io."
+        },
+        {
+            "name": "Python WebIRC",
+            "technologies": "Twisted, Zope Interface",
+            "description": "Simplified the Iris/QwebIRC python server and implemented the Ident dameon protocol for connecting to some IRC servers."
+        },
+        {
+            "name": "Epitome MVC",
+            "technologies": "Mootools, BusterJS",
+            "description": "Contributor to the framework. Improved the functionality of model properties and provided two solutions to passing events with an array in the arguments"
         }
     ],
-    "speaking" : [
+    "experience": [
         {
-            "title" : "Debate for Garbage Commission",
-            "location" : "Springfield Townhall",
-            "link" : "http://www.albinoblacksheep.com/flash/homer"
+            "company": "CESI Environment Canada",
+            "link": "http://maps-cartes.ec.gc.ca/indicators-indicateurs",
+            "title": "Geomatics Applications Developer",
+            "startDate": "January 2013",
+            "endDate": "May 2013",
+            "technologies": "ASP.net, VB, SQL, ArcGIS SDKs, ArcGIS Online, jQuery, dojo, CSS3, HTML5",
+            "responsibilities": "Created various AJAX service end points and developed administration pages in ASP.NET. Refined the processes of merging contents of a client's file geodatabases into the CESI Microsoft SQL server database. Refactored the air toxics and emissions indicator 'data entities' and added new layers data validation.",
+            "achievements": "Participated in a group in a working group responsible for creating a standard web mapping platform (RAMP) for various CESI projects. Mainly worked on implementing localization and transfering state data. Removed serious security holes in the public web services."
+        }, {
+            "company": "Casgrain & Company Limited",
+            "title": "IT Intern",
+            "startDate": "May 2012",
+            "endDate": "August 2012",
+            "technologies": "Java, SQL",
+            "responsibilities": "Built custom, data driven financial applications using Java for coworkers. These applications had to keep up to date with multiple, periodically updated SQL databases on different servers. Respond to technical questions and provide solutions to problems.",
+            "achievements": "Commensed merge of a relatively large Microsoft Access 2000 database into a database in the main Microsoft SQL 2005 server. Created and maintained several SQL databases."
         }
     ],
-    "education" : [
+    "education": [
         {
-            "institute" : "Springfield University",
-            "startDate" : "1991",
-            "endDate" : "1993",
-            "program" : "Nuclear Physics",
-            "achievements" : "Ran over dean with car, kidnapped Sir Oinks-a-lot."
+            "institute": "University of Waterloo",
+            "startDate": "2011",
+            "endDate": "present",
+            "program": "Geomatics with Computer Science minor",
+            "achievements": "Dean's list from 2011-2012"
         }
-    ]
+    ],
+    "lastupdate": "15-01-2013",
+    "resume": "http://megawac.github.io"
 }

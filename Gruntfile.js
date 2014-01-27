@@ -1,4 +1,4 @@
-// Generated on 2014-01-22 using generator-mobile 0.0.2
+/* jshint es3:false */
 'use strict';
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({
@@ -13,11 +13,21 @@ module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     grunt.initConfig({
-        // TODO: Make this conditional
+        pkg: grunt.file.readJSON('package.json'),
+
+        meta: {
+            banner: [
+                '/** <%= pkg.name %> v<%= pkg.version %>',
+                ' * Authors: <% _.each(pkg.authors, function(author) { %><%= author.name %> (<%= author.link %>) <% }); %>',
+                ' * I recommend making changes to the LESS rather than this css',
+                ' */'
+            ].join('\n')
+        },
+
         watch: {
             less: {
                 files: 'less/{,*/}*.less',
-                tasks: 'less'
+                tasks: ['less']
             },
             livereload: {
                 options: {
@@ -88,8 +98,7 @@ module.exports = function(grunt) {
                     config: 'less/.csscomb.json'
                 },
                 files: {
-                    'css/bootstrap.css': 'css/bootstrap.css',
-                    'css/bootstrap-theme.css': 'css/bootstrap-theme.css'
+                    'css/bootstrap.css': 'css/bootstrap.css'
                 }
             }
         },
@@ -100,8 +109,7 @@ module.exports = function(grunt) {
             },
             bs: {
                 files: {
-                    'css/bootstrap.css': ['css/bootstrap.css'],
-                    'css/bootstrap-theme.css': ['css/bootstrap-theme.css']
+                    'css/bootstrap.css': ['css/bootstrap.css']
                 }
             }
         },
@@ -114,8 +122,7 @@ module.exports = function(grunt) {
             },
             bootstrap: {
                 files: {
-                    'css/bootstrap.css': ['less/bootstrap/bootstrap.less'],
-                    'css/bootstrap-theme.css': ['less/bootstrap/theme.less']
+                    'css/bootstrap.css': ['less/bootstrap/bootstrap.less']
                 }
             },
             summarize: {
@@ -135,6 +142,16 @@ module.exports = function(grunt) {
             }
         },
 
+        htmlbuild: {
+            build: {
+                src: 'summary-dev.html',
+                dest: 'index.html',
+                options: {
+                    beautify: false
+                }
+            }
+        },
+
         autoshot: {
             'default_options': {
                 options: {
@@ -151,7 +168,7 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('server', function(target) {
-        var type = 'livereload';
+        var type = 'livereload:less';
         if (target === 'dist') {
             return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
         } else if(target === 'lite') {
@@ -159,6 +176,7 @@ module.exports = function(grunt) {
         }
 
         grunt.task.run([
+            'default',
             'connect:livereload',
             'open:server',
             'watch:' + type
@@ -172,9 +190,10 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', ['jshint']);
 
-    grunt.registerTask('build', ['test', 'less', 'csscomb', 'csslint', 'autoprefixer']);
+    grunt.registerTask('@build', ['test', 'less', 'csscomb', 'csslint', 'autoprefixer']);
+    grunt.registerTask('build', ['@build', /*'cssmin',*/ 'htmlbuild']);
 
-    grunt.registerTask('default', ['build']);
+    grunt.registerTask('default', ['@build']);
 
     grunt.registerTask('screenshots', [
         'connect:livereload',

@@ -98,7 +98,9 @@ module.exports = function(grunt) {
                     config: 'less/.csscomb.json'
                 },
                 files: {
-                    'css/bootstrap.css': 'css/bootstrap.css'
+                    'css/bootstrap.css': 'css/bootstrap.css',
+                    'css/summarize.css': 'css/summarize.css',
+                    'css/print.css': 'css/print.css'
                 }
             }
         },
@@ -153,18 +155,13 @@ module.exports = function(grunt) {
             }
         },
 
-        autoshot: {
-            'default_options': {
-                options: {
-                    // necessary config
-                    path: 'screenshots/',
-                    filename: '',
-                    type: 'PNG',
-                    // optional config, must set either remote or local
-                    remote: 'http://localhost:<%= connect.options.port %>',
-                    viewport: ['320x480', '480x320', '384x640', '640x384', '602x963', '963x602', '600x960', '960x600', '800x1280', '1280x800', '768x1024', '1024x768']
-                }
-            }
+        bumpup: {
+            file: 'package.json'
+        },
+        tagrelease: {
+            file: 'package.json',
+            commit:  true,
+            message: 'Release %version%'
         }
     });
 
@@ -194,11 +191,12 @@ module.exports = function(grunt) {
     grunt.registerTask('@build', ['test', 'less', 'csscomb', 'csslint', 'autoprefixer']);
     grunt.registerTask('build', ['@build', /*'cssmin',*/ 'htmlbuild']);
 
+    grunt.registerTask('release', function (type) {
+        type = type ? type : 'patch';
+        grunt.task.run('build');
+        grunt.task.run('bumpup:' + type); // Bump up the package version
+        grunt.task.run('tagrelease');     // Commit & tag the changes from above
+    });
+
     grunt.registerTask('default', ['@build']);
-
-    grunt.registerTask('screenshots', [
-        'connect:livereload',
-        'autoshot'
-    ]);
-
 };

@@ -60,15 +60,24 @@ body {
     padding-left: 1.5em;
     padding-right: 2em;
     padding-bottom: 2em;
+}
 
-    //needs to override some media queries
-    dt {
-        width: 110px;
-    }
-    dd {
-        margin-left: 130px;
-        padding-top: 1px;//alignment fix for expected font
-    }
+//Updated bootsrap/type.less
+// @dt_width: 110px;
+
+// @media (min-width: @grid-float-breakpoint) {
+//   .dl-horizontal {
+//     dt {
+//       width: @dt_width;
+//     }
+//     dd {
+//       margin-left: (@dt_width + 20px);
+//     }
+//   }
+// }
+
+dt {
+	font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
 }
 
 #skills, #frameworks {
@@ -135,13 +144,13 @@ body {
 //     }
 // }
 
-@media (min-width: @screen-sm-min) {
+@media (min-width: @screen-xs-min) {
     .reactive-list li {
         width: 49%;
     }
 }
 
-@media (min-width: @screen-md-min) {
+@media (min-width: @screen-sm-min) {
     .reactive-list li {
         width: 33%;
     }

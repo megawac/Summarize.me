@@ -40,12 +40,8 @@ body {
   padding-right: 2em;
   padding-bottom: 2em;
 }
-#resume dt {
-  width: 110px;
-}
-#resume dd {
-  margin-left: 130px;
-  padding-top: 1px;
+dt {
+  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
 }
 #skills ul,
 #frameworks ul {
@@ -92,12 +88,12 @@ body {
   float: left;
   width: 100%;
 }
-@media (min-width: 768px) {
+@media (min-width: 480px) {
   .reactive-list li {
     width: 49%;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .reactive-list li {
     width: 33%;
   }

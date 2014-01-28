@@ -178,6 +178,10 @@ ol {
 }
 
 // Description Lists
+
+@dt_width: 120px;
+@dt_horz_break: 5in;
+
 dl {
   margin-top: 0; // Remove browser default
   margin-bottom: @line-height-computed;
@@ -198,17 +202,17 @@ dd {
 // Defaults to being stacked without any of the below styles applied, until the
 // grid breakpoint is reached (default of ~768px).
 
-@media (min-width: @grid-float-breakpoint) {
+@media (min-width: @dt_horz_break) {
   .dl-horizontal {
     dt {
       float: left;
-      width: (@component-offset-horizontal - 20);
+      width: @dt_width;
       clear: left;
       text-align: right;
       .text-overflow();
     }
     dd {
-      margin-left: @component-offset-horizontal;
+      margin-left: (@dt_width + 15px);
       &:extend(.clearfix all); // Clear the floated `dt` if an empty `dd` is present
     }
   }

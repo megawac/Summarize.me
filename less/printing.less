@@ -1,3 +1,5 @@
+@import "bootstrap/print.less";
+
 #resume {
     margin: 0;
     padding-bottom: 0;
@@ -10,4 +12,12 @@ blockquote {
 #summary {
     page-break-before: always; //so printing seperates resume from github summary
     display: none;
+}
+
+// how to inline anchor tags
+//http://alistapart.com/article/improvingprint
+a:link:after,
+a:visited:after {
+  // content: " (" attr(href) ") ";
+  content: "";//don't for now
 }

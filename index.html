@@ -3,13 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title></title>
+    <title>Curriculum Vitae</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Alegreya'>
-    <link rel="stylesheet" href="css/summarize.css">
     <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/summarize.css">
+    <link rel="stylesheet" href="css/print.css" media="print">
 
     <!--[if lt IE 9]>
         <script src="js/vendor/html5shiv.js"></script>
@@ -26,15 +27,23 @@
         </section>
         <!-- ko if: $data.objective -->
         <section id="objective">
-            <h2>Objective</h2>
+            <h2 class="underline">Objective</h2>
             <blockquote>
                 <p data-bind="text: objective"></p>
             </blockquote>
         </section>
         <!-- /ko -->
+        <!-- ko if: $data.aboutme -->
+        <section id="aboutme">
+            <h2 class="underline">Summary</h2>
+            <blockquote>
+                <p data-bind="text: aboutme"></p>
+            </blockquote>
+        </section>
+        <!-- /ko -->
         <!-- ko if: $data.skills -->
         <section id="skills">
-            <h2>Skills &#47; Languages</h2>
+            <h2 class="underline">Skills &#47; Languages</h2>
             <ul class="reactive-list" data-bind="foreach: { data: skills, as: 'skill' }">
                 <li data-bind="text: skill"></li>
             </ul>
@@ -42,7 +51,7 @@
         <!-- /ko -->
         <!-- ko if: $data.frameworks && $data.frameworks.length > 0 -->
         <section id="frameworks">
-            <h2>Frameworks &amp; Libraries</h2>
+            <h2 class="underline">Frameworks &amp; Libraries</h2>
             <ul class="reactive-list" data-bind="foreach: { data: frameworks, as: 'framework' }">
                 <li data-bind="text: framework"></li>
             </ul>
@@ -50,13 +59,13 @@
         <!-- /ko -->
         <!-- ko if: $data.projects && $data.projects.length > 0 -->
         <section id="projects">
-            <h2>Projects</h2>
+            <h2 class="underline">Projects</h2>
             <ul data-bind="foreach: { data: projects, as: 'project' }" class="non-content">
                 <li>
                     <section>
                         <dl class="dl-horizontal">
-                            <dt class="proj-name">Name:</dt>
-                            <dd data-bind="text: project.name"></dd>
+                            <dt>Name:</dt>
+                            <dd data-bind="text: project.name" class="sect-title"></dd>
                             <!-- ko if: project.technologies && project.technologies.length > 0 -->
                             <dt>Technologies:</dt>
                             <dd data-bind="text: technologies"></dd>
@@ -71,13 +80,13 @@
         <!-- /ko -->
         <!-- ko if: $data.experience && $data.experience.length > 0 -->
         <section id="experience">
-            <h2>Experience</h2>
+            <h2 class="underline">Experience</h2>
             <ul data-bind="foreach: { data: experience, as: 'job' }" class="non-content">
                 <li>
                     <section>
                         <dl class="dl-horizontal">
-                            <dt class="proj-name">Company:</dt>
-                            <dd data-bind="text: job.company"></dd>
+                            <dt>Company:</dt>
+                            <dd data-bind="text: job.company" class="sect-title"></dd>
                             <dt>Title:</dt>
                             <dd data-bind="text: job.title"></dd>
                             <dt>Tenure:</dt>
@@ -106,13 +115,13 @@
         <!-- /ko -->
         <!-- ko if: $data.speaking && $data.speaking.length > 0 -->
         <section id="speaking">
-            <h2>Speaking</h2>
+            <h2 class="underline">Speaking</h2>
             <ul data-bind="foreach: { data: speaking, as: 'talk' }" class="non-content">
                 <li>
                     <section>
                         <dl class="dl-horizontal">
-                            <dt class="proj-name">Title:</dt>
-                            <dd data-bind="text: talk.title"></dd>
+                            <dt>Title:</dt>
+                            <dd data-bind="text: talk.title" class="sect-title"></dd>
                             <dt>Location:</dt>
                             <dd data-bind="text: talk.link"></dd>
                             <!-- ko if: talk.link -->
@@ -132,8 +141,8 @@
                 <li>
                     <section>
                         <dl class="dl-horizontal">
-                            <dt class="proj-name">Institute:</dt>
-                            <dd data-bind="text: school.institute"></dd>
+                            <dt>Institute:</dt>
+                            <dd data-bind="text: school.institute" class="sect-title"></dd>
                             <dt>Program:</dt>
                             <dd data-bind="text: school.program"></dd>
                             <dt>Dates Attended:</dt>
@@ -152,7 +161,7 @@
 
     <div id="summary" class="col-md-12 col-lg-4 summary">
         <h2>Github Summary
-            <small>Status: <span data-bind="if: user.hireable">seeking interviews</span><span data-bind="ifnot: user.hireable">employed</span></small>
+            <small data-bind="visible: user.hireable != null" class="status">Status: <span data-bind="if: user.hireable">seeking interviews</span><span data-bind="ifnot: user.hireable">employed</span></small>
         </h2>
         <div class="user-info" data-bind="with: $data.user">
             <a data-bind="attr: { href: html_url }, text: name"></a> has <span data-bind="text: followers"></span> followers and <span data-bind="text: public_repos"></span> public repositiories on Github.

@@ -22,8 +22,23 @@ body {
   margin-bottom: 2px;
   margin-left: 12px;
 }
-.resume .proj-name {
-  font-size: 1.2em;
+.resume .sect-title {
+  font-size: 1.1em;
+  color: #280b0b;
+}
+.underline {
+  padding-bottom: 2px;
+  border: 0;
+  border-bottom: 1px solid #e3e3e3;
+  -webkit-border-image: -webkit-linear-gradient(85deg, #e3e3e3, #f0f3f5) 20 stretch;
+  -moz-border-image: -moz-linear-gradient(85deg, #e3e3e3, #f0f3f5) 20 stretch;
+  -o-border-image: -o-linear-gradient(85deg, #e3e3e3, #f0f3f5) 20 stretch;
+  border-image: linear-gradient(5deg, #e3e3e3, #f0f3f5) 20 stretch;
+}
+#resume {
+  padding-left: 1.5em;
+  padding-right: 2em;
+  padding-bottom: 2em;
 }
 #resume dt {
   width: 110px;
@@ -38,7 +53,6 @@ body {
   max-width: 1000px;
 }
 #summary {
-  page-break-before: always;
   background-color: #eef3f7;
   -webkit-box-shadow: -2px 2px 3px 2px #96a2a3;
   -moz-box-shadow: -2px 2px 3px 2px #96a2a3;
@@ -61,6 +75,11 @@ body {
 }
 .summary .stats .glyphicon {
   margin-right: 1px;
+}
+@media (min-width: 1200px) and (max-width: 1410px) {
+  .status {
+    display: block;
+  }
 }
 .non-content {
   margin: 0;

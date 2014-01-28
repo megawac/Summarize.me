@@ -273,6 +273,8 @@ fallback.ready(function() {
             })
         }, resume);
 
+        document.title = 'Résumé of '  + resume.name;
+
         return model.update();
     }
 

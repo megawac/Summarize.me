@@ -3,6 +3,7 @@
 //vars
 @main_back: #F0F3F5;
 @summary_back: saturate(@main_back, 20%);
+@heading_underline: #e3e3e3;
 
 @info_inset: 12px;//offset left
 @mbot: 2px;
@@ -42,12 +43,25 @@ body {
         margin-left: @info_inset;
     }
 
-    .proj-name {
-        font-size: @focus_txt_size;
+    .sect-title {
+        font-size: 1.1em;
+        color: darken(saturate(@text-color, 55%), 10%);
     }
 }
 
+.underline {
+    padding-bottom: 2px;
+    border: 0;
+    border-bottom: 1px solid @heading_underline;
+    border-image: linear-gradient(5deg,@heading_underline,@main_back) 20 stretch;
+}
+
 #resume {
+    padding-left: 1.5em;
+    padding-right: 2em;
+    padding-bottom: 2em;
+
+    //needs to override some media queries
     dt {
         width: 110px;
     }
@@ -67,7 +81,6 @@ body {
 
 //Github summary stuff
 #summary {
-    page-break-before: always; //so printing seperates resume from github summary
     background-color: @summary_back;
     box-shadow: -2px 2px 3px 2px #96A2A3;
 }
@@ -91,6 +104,14 @@ body {
             margin-right: 1px;
         }
     }
+
+}
+
+//to prevent status being displayed on multiple lines
+@media (min-width: @screen-lg-min) and (max-width: 1410px) {
+	.status {
+		display: block;
+	}
 }
 
 //utils

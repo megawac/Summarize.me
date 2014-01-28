@@ -1,6 +1,6 @@
 * {
-  text-shadow: none !important;
   color: #000 !important;
+  text-shadow: none !important;
   background: transparent !important;
   box-shadow: none !important;
 }
@@ -21,6 +21,7 @@ a[href^="#"]:after {
 pre,
 blockquote {
   border: 1px solid #999;
+
   page-break-inside: avoid;
 }
 thead {
@@ -71,15 +72,16 @@ select {
   border: 1px solid #ddd !important;
 }
 #resume {
-  margin: 0;
   padding-bottom: 0;
+  margin: 0;
 }
 blockquote {
   border: 0;
 }
 #summary {
-  page-break-before: always;
   display: none;
+
+  page-break-before: always;
 }
 a:link:after,
 a:visited:after {

@@ -13,14 +13,14 @@ body {
   margin: 7px 0 5px;
 }
 .resume #job-field {
-  margin-top: -0.5em;
-  margin-left: 12px;
+  margin-top: -.5em;
   margin-bottom: 2px;
+  margin-left: 12px;
 }
 .resume .res-info {
-  font-size: 1.2em;
   margin-bottom: 2px;
   margin-left: 12px;
+  font-size: 1.2em;
 }
 .resume .sect-title {
   font-size: 1.1em;
@@ -36,17 +36,17 @@ body {
   border-image: linear-gradient(5deg, #e3e3e3, #f0f3f5) 20 stretch;
 }
 #resume {
-  padding-left: 1.5em;
   padding-right: 2em;
   padding-bottom: 2em;
+  padding-left: 1.5em;
 }
 dt {
   font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
 }
 #skills ul,
 #frameworks ul {
-  font-size: 1.2em;
   max-width: 1000px;
+  font-size: 1.2em;
 }
 #summary {
   background-color: #eef3f7;
@@ -58,9 +58,9 @@ dt {
   font-size: 1.2em;
 }
 .summary .repo-name {
+  margin-right: 4px;
   font-size: 1.2em;
   vertical-align: middle;
-  margin-right: 4px;
 }
 .summary .stats {
   display: inline;
@@ -78,8 +78,8 @@ dt {
   }
 }
 .non-content {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 .reactive-list {
   overflow: hidden;

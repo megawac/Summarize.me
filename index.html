@@ -196,7 +196,7 @@
         <!-- /ko -->
         <!-- ko if: pulls().length > 0 -->
         <div class="contributions">
-            <h3>Contributions to External Projects</h3>
+            <h3>Contributor to the Following Projects</h3>
             <ul data-bind="foreach: { data: pulls, as: 'pull',
                                     beforeRemove: $removing,
                                     afterAdd: $appending }">
@@ -220,7 +220,10 @@
     <noscript>
         <strong>Thanks for viewing my resume, but it is generated via Javascript templates &#9477; Please enable JS to view my resume</strong>
     </noscript>
-    <script src="js/vendor/fallback.js"></script>
+    <script src="js/vendor/minify-json.js" async></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/knockout/3.0.0/knockout.js"></script>
+    <script src="//cdn.jsdelivr.net/lodash/2.4.1/lodash.min.js"></script>
     <script src="js/summarize.js"></script>
 
 </body>

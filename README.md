@@ -1,7 +1,7 @@
 Summarize.me
 =============
 
-A JSON resume generator and Github summarizer using a given `resume.json` file and some Github API calls.
+A JSON resume generator and Github summarizer using a given `resume.json` file and some Github API calls. The templates are compiled through knockout.js, ajax done through jQuery and CSS generated through LESS.
 
 Yo heads up, this makes a bunch of API calls. The summary generated for Paul Irish needed about 225 requests and retrieved 400KB of data. I'm actively trying to reduce these figs.
 

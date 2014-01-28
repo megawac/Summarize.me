@@ -122,12 +122,13 @@ module.exports = function(grunt) {
             },
             bootstrap: {
                 files: {
-                    'css/bootstrap.css': ['less/bootstrap/bootstrap.less']
+                    'css/bootstrap.css': ['less/bootstrap/bootstrap.less'] //minimal bootstrap build
                 }
             },
             summarize: {
                 files: {
-                    'css/summarize.css': ['less/summarize.less']
+                    'css/summarize.css': ['less/summarize.less'],
+                    'css/print.css': ['less/printing.less']
                 }
             }
         },

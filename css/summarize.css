@@ -26,6 +26,9 @@ body {
   font-size: 1.1em;
   color: #280b0b;
 }
+.resume blockquote {
+  margin-bottom: 0;
+}
 .underline {
   padding-bottom: 2px;
   border: 0;

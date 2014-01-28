@@ -1,4 +1,23 @@
+@import "bootstrap/variables.less";
 @import "bootstrap/print.less";
+
+@heading-factor: 0.8;
+
+h1 {
+	margin-top: 0;
+}
+h1, .h1 {
+	font-size: (@font-size-h1 * @heading-factor);
+}
+h2, .h2 {
+	font-size: (@font-size-h2 * @heading-factor);
+}
+h3, .h3 {
+	font-size: (@font-size-h3 * @heading-factor);
+}
+h4, .h4 {
+	font-size: (@font-size-h4 * @heading-factor);
+}
 
 #resume {
     margin: 0;
@@ -20,4 +39,8 @@ a:link:after,
 a:visited:after {
   // content: " (" attr(href) ") ";
   content: "";//don't for now
+}
+
+blockquote, .res-info, #skills ul, #frameworks ul {
+    font-size: 1em;
 }

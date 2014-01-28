@@ -1,16 +1,5 @@
-//Attempt to load as much of this from cdns as possible as github doesn't cache scripts.
-//Interesting note is api requests are cached for 1 hour
-fallback.load({
-    jQuery: ['//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js', 'js/vendor/jquery.js'],
-    _: ['//cdn.jsdelivr.net/lodash/2.4.1/lodash.min.js', 'js/vendor/lodash.js'],
-    ko: ['//cdn.jsdelivr.net/knockout/3.0.0/knockout.js', 'js/vendor/knockout.js'],
-    'JSON.minify': ['js/vendor/minify-json.js']
-});
-
-fallback.ready(function() {
+(function($) {
     'use strict';
-
-    var $ = window.jQuery;
 
     var resumeModel;
     var githubModel;
@@ -278,4 +267,4 @@ fallback.ready(function() {
         return model.update();
     }
 
-});
+})(jQuery);

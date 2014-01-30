@@ -1,9 +1,11 @@
 (function($) {
     'use strict';
 
+    //init these when ready
     var resumeModel;
     var githubModel;
 
+    //Github settings from (resume.json).github obj
     var gitSettings;
 
     var isURL = function(link) {

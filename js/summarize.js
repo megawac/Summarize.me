@@ -1,6 +1,6 @@
 (function($) {
     'use strict';
-
+    /* global resume */
     //init these when ready
     var resumeModel;
     var githubModel;
@@ -39,6 +39,8 @@
         return $.ajax({
             url: url,
             data: data,
+            crossDomain: true,
+            dataType: window.XDomainRequest ? 'jsonp' : 'json', //help ie out :o
             accept: {//to stabalize api
                 json: 'application/vnd.github.v3+json',
                 '*': 'application/vnd.github.v3.raw+json'
@@ -49,7 +51,7 @@
 
     var checked  = {};
 
-    $.ajax({url:'resume.json', dataType: 'text'})
+    $.ajax({url: resume && resume.json || 'resume.json', dataType: 'text'})
     .then(function(resume) {
         resume = $.parseJSON(JSON.minify(resume));
         gitSettings = resume.github || {};

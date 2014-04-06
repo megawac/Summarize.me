@@ -13,32 +13,45 @@ body {
   margin: 7px 0 5px;
 }
 .resume #job-field {
-  margin-top: -0.5em;
-  margin-left: 12px;
+  margin-top: -.5em;
   margin-bottom: 2px;
+  margin-left: 12px;
 }
 .resume .res-info {
-  font-size: 1.2em;
   margin-bottom: 2px;
   margin-left: 12px;
-}
-.resume .proj-name {
   font-size: 1.2em;
 }
-#resume dt {
-  width: 110px;
+.resume .sect-title {
+  font-size: 1.1em;
+  color: #280b0b;
 }
-#resume dd {
-  margin-left: 130px;
-  padding-top: 1px;
+.resume blockquote {
+  margin-bottom: 0;
+}
+.underline {
+  padding-bottom: 2px;
+  border: 0;
+  border-bottom: 1px solid #e3e3e3;
+  -webkit-border-image: -webkit-linear-gradient(85deg, #e3e3e3, #f0f3f5) 20 stretch;
+  -moz-border-image: -moz-linear-gradient(85deg, #e3e3e3, #f0f3f5) 20 stretch;
+  -o-border-image: -o-linear-gradient(85deg, #e3e3e3, #f0f3f5) 20 stretch;
+  border-image: linear-gradient(5deg, #e3e3e3, #f0f3f5) 20 stretch;
+}
+#resume {
+  padding-right: 2em;
+  padding-bottom: 2em;
+  padding-left: 1.5em;
+}
+dt {
+  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
 }
 #skills ul,
 #frameworks ul {
-  font-size: 1.2em;
   max-width: 1000px;
+  font-size: 1.2em;
 }
 #summary {
-  page-break-before: always;
   background-color: #eef3f7;
   -webkit-box-shadow: -2px 2px 3px 2px #96a2a3;
   -moz-box-shadow: -2px 2px 3px 2px #96a2a3;
@@ -48,9 +61,9 @@ body {
   font-size: 1.2em;
 }
 .summary .repo-name {
+  margin-right: 4px;
   font-size: 1.2em;
   vertical-align: middle;
-  margin-right: 4px;
 }
 .summary .stats {
   display: inline;
@@ -62,9 +75,18 @@ body {
 .summary .stats .glyphicon {
   margin-right: 1px;
 }
+.summary .organizations ul {
+  margin-left: 40px;
+  font-size: 1.2em;
+}
+@media (min-width: 1200px) and (max-width: 1410px) {
+  .status {
+    display: block;
+  }
+}
 .non-content {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 .reactive-list {
   overflow: hidden;
@@ -73,12 +95,12 @@ body {
   float: left;
   width: 100%;
 }
-@media (min-width: 768px) {
+@media (min-width: 480px) {
   .reactive-list li {
     width: 49%;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .reactive-list li {
     width: 33%;
   }

@@ -1,20 +1,11 @@
-//Attempt to load as much of this from cdns as possible as github doesn't cache scripts.
-//Interesting note is api requests are cached for 1 hour
-fallback.load({
-    jQuery: ['//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js', 'js/vendor/jquery.js'],
-    _: ['//cdn.jsdelivr.net/lodash/2.4.1/lodash.min.js', 'js/vendor/lodash.js'],
-    ko: ['//cdn.jsdelivr.net/knockout/3.0.0/knockout.js', 'js/vendor/knockout.js'],
-    'JSON.minify': ['js/vendor/minify-json.js']
-});
-
-fallback.ready(function() {
+(function($) {
     'use strict';
-
-    var $ = window.jQuery;
-
+    /* global resume */
+    //init these when ready
     var resumeModel;
     var githubModel;
 
+    //Github settings from (resume.json).github obj
     var gitSettings;
 
     var isURL = function(link) {
@@ -30,7 +21,7 @@ fallback.ready(function() {
      * Resource fetching and API calls
      *********************************/
     var GITHUB_API = 'https://api.github.com/';
-    var API_TOKEN = 'access_token=7806bcbf05bc6c9c7ebc74e9d893257b7de6a5a3';//Application api token
+    var API_TOKEN = 'access_token=4fefed9402349992bdcfe93978f2647fec350ebc'; //Application api token
     var $gitGet = function(url, data) {
         url = urlify(url, GITHUB_API);
 
@@ -48,6 +39,8 @@ fallback.ready(function() {
         return $.ajax({
             url: url,
             data: data,
+            crossDomain: true,
+            dataType: window.XDomainRequest ? 'jsonp' : 'json', //help ie out :o
             accept: {//to stabalize api
                 json: 'application/vnd.github.v3+json',
                 '*': 'application/vnd.github.v3.raw+json'
@@ -58,7 +51,7 @@ fallback.ready(function() {
 
     var checked  = {};
 
-    $.ajax({url:'resume.json', dataType: 'text'})
+    $.ajax({url: resume && resume.json || 'resume.json', dataType: 'text'})
     .then(function(resume) {
         resume = $.parseJSON(JSON.minify(resume));
         gitSettings = resume.github || {};
@@ -87,10 +80,17 @@ fallback.ready(function() {
     })
     .then(function(userInfo, repoInfo, organizations, pullRequests) {
         userInfo = userInfo[0];
-        organizations = organizations[0];
         var repos = _.filter(repoInfo[0], function(repo) {
             return !_.contains(gitSettings['exclude repos'], repo.name) && (!repo.fork || repo.stargazers_count > 0 || repo.subscribers_count > 0);
         });
+        //update resume with user info
+        // resumeModel.updateInfo(userInfo);
+
+        githubModel = new GithubModel({
+            user: userInfo,
+            repos: repos
+        });
+
         _.each(repos, function(repo) {
             $.when(
                 $gitGet(repo.url),
@@ -104,6 +104,9 @@ fallback.ready(function() {
             });//may 404 for repos with no commits
         });
 
+        _.each(organizations[0], function(org) {
+            $gitGet(org.url).then(githubModel.addOrganization);
+        });
 
         var pulls = _.filter(pullRequests[0].items, function(pr) {
             var match = pr.url.match(/repos\/([\w.-]+)\/([\w.-]+)\/issues/);
@@ -143,15 +146,6 @@ fallback.ready(function() {
                 } //else not merged
             }); //note may get 410 responses for deleted repos
         });
-
-        //update resume with user info
-        // resumeModel.updateInfo(userInfo);
-
-        githubModel = new GithubModel({
-            user: userInfo,
-            repos: repos,
-            organizations: organizations
-        });
     });
 
     /*********************************
@@ -178,7 +172,7 @@ fallback.ready(function() {
         var weight = function(repo) {
             var _repo = ko.isObservable(repo) ? repo() : repo; //unwrap
             return _.reduce(weights, function(weight, val, prop) {
-                if(val) weight += sortMap[prop](_repo, val);
+                if(val) weight += sortMap[prop](_repo, val) || 0; //lazily handle NaN
                 return weight;
             }, 0);
         };
@@ -241,7 +235,7 @@ fallback.ready(function() {
             return pulls.slice(0, gitSettings['max contributions']);
         }, pulls);
 
-        window.orgs = model.organizations = ko.computed(function() {
+        model.organizations = ko.computed(function() {
             return orgs.slice(0, gitSettings['max organizations']);
         }, orgs);
 
@@ -254,6 +248,10 @@ fallback.ready(function() {
         model.addPull = function(pr) {
             pulls.push(processRepo(pr));
             sortRepos(pulls, gitSettings['sort pull weights']);
+        };
+
+        model.addOrganization = function(org) {
+            orgs.push(org);
         };
 
         sortRepos(repos, gitSettings['sort repo weights']);
@@ -273,7 +271,9 @@ fallback.ready(function() {
             })
         }, resume);
 
+        document.title = 'Résumé of '  + resume.name;
+
         return model.update();
     }
 
-});
+})(jQuery);

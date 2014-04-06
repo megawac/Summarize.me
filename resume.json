@@ -1,40 +1,39 @@
 {
-    "github": {//settings used to generate your github resume
-        "user": "megawac", //if falsy we'll guess
+    "github": {
+        "user": "megawac",
 
         "include repos": true,
-        "include pulls": true, //attempt to find your pull requests (requires a lot of requests with current github api)
+        "include pulls": true,
         "include unmerged pulls": false,
         
         //Sorting weights. The weights are multiplied by the corresponding repo value in order to sort your repos
         "sort repo weights": {
             "stars": 1,
             "watchers": 1,
-            "commits": 0,
-            "activity": 0 //days since last commit
+            "commits": 5,
+            "activity": 0
         },
         "sort pull weights": {
             "stars": 1,
             "watchers": 1,
             "commits": 10,
             "activity": 0
-        }, //How to sort your pull requests (latest 100). Valid options are ["stars", "commits", "activity"]
+        },
 
         "max organizations": 10,
         "max contributions": 6,
         "max repos": 6,
 
-        "exclude repos": ["cdnjs", "jsdelivr", "megawac.github.io"]//repos to exclude by repo name
+        "exclude repos": ["cdnjs", "jsdelivr", "megawac.github.io", "megawac.github.com", "tfstreams"]
     },
 
-    //most of these are optional beside some of the obvious
     "name": "Graeme J. Yeates",
     "title": "Web Developer/GIS Specialist",
     "phone": "(647) 215-7372",
     "contact": "gjyeates@uwaterloo.ca",
     "portfolio": "www.github.com/megawac",
     "objective": "Geographic information systems (GIS) internship that allows me to integrate my knowledge of web development and databases with my skills in GIS.",
-    "aboutme": "I am a passionate developer and enjoy working on active projects with others who are enthusiastic about their work.",
+    "aboutme": "I study GIS and computer science at the University of Waterloo, am an enthusiast programmer, and a contributor to several open source projects (see my github profile). My work strategy involves seperating jobs into into tasks, then assigning their priorities and deadlines. I'm always searching for new automation techniques and ways optimize my workflow.",
     "social": [
         {
             "link": "https://github.com/megawac",
@@ -50,10 +49,10 @@
         }
     ],
     "skills": [
-        "JavaScript/Node.js", "HTML5", "CSS3", "ESRI ArcGIS", "SQL", "Python", "Java", "ASP.NET with VB & C#", "GIT & TFS Source Control"
+        "JavaScript/Node.js", "HTML5", "CSS3/LESS", "ESRI ArcGIS", "SQL", "Python", "Java", "ASP.NET with VB & C#", "GIT & TFS Source Control"
     ],
     "frameworks": [
-        "Mootools", "jQuery", "dojo", "ArcGIS SDKs", "Python Twisted", "Express.js", "Socket.io", "Grunt", "Twitter Bootstrap"
+        "jQuery", "Mootools", "dojo", "ArcGIS SDKs", "Python Twisted", "Knockout.js", "Backbone", "Twitter Bootstrap", "Grunt"
     ],
     "projects": [
         {
@@ -67,14 +66,9 @@
             "description": "QwebIRC is a free, open source AJAX instant relay chat (IRC) client designed to be simple, feature-rich, and intuitive. I've improved the extensibility and functionality of the original QwebIRC project by abstracting the browser hacks to frameworks and modules, rewriting the entire user interface (UI) in templated Views, decoupling of the IRC client from the UI and making the code DRY by extending the utility module. The changes have removed unnessary relationships and made adding features less trivial."
         },
         {
-            "name": "Node WebIRC",
-            "technologies": "socket.io, Express, underscore",
-            "description": "An IRC Connection backend for the QwebIRC AJAX client. This project is responsible for serving files to the AJAX client and establishing IPv4 or IPv6 connections to a set IRC server and serve data via socket.io."
-        },
-        {
             "name": "Python WebIRC",
             "technologies": "Twisted, Zope Interface",
-            "description": "Simplified the Iris/QwebIRC python server and implemented the Ident dameon protocol for connecting to some IRC servers."
+            "description": "Created a localization strategy and implemented the Ident dameon protocol for connecting to secure servers."
         },
         {
             "name": "Epitome MVC",
@@ -111,6 +105,6 @@
             "achievements": "Dean's list from 2011-2012"
         }
     ],
-    "lastupdate": "15-01-2013",
+    "lastupdate": "05-03-2013",
     "resume": "http://megawac.github.io"
 }

@@ -75,6 +75,10 @@ dt {
 .summary .stats .glyphicon {
   margin-right: 1px;
 }
+.summary .organizations ul {
+  margin-left: 40px;
+  font-size: 1.2em;
+}
 @media (min-width: 1200px) and (max-width: 1410px) {
   .status {
     display: block;

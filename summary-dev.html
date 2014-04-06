@@ -171,7 +171,7 @@
         <div class="organizations">
             <h3>Organizations</h3>
             <!-- ko  -->
-            <ul data-bind="foreach: organizations as: 'org'" class="list-inline">
+            <ul data-bind="foreach: { data: organizations, as: 'org' }" class="list-inline">
                 <a data-bind="attr: {href: org.html_url}, text: org.name"></a>
             </ul>
             <!-- /ko -->
@@ -221,10 +221,8 @@
     <noscript>
         <strong>Thanks for viewing my resume, but it is generated via Javascript templates &#9477; Please enable JS to view my resume</strong>
     </noscript>
-    <script src="js/vendor/minify-json.js" async></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//cdn.jsdelivr.net/knockout/3.0.0/knockout.js"></script>
-    <script src="//cdn.jsdelivr.net/lodash/2.4.1/lodash.min.js"></script>
+    <script src="js/vendor/minify-json.js"></script>
+    <script src="http://cdn.jsdelivr.net/g/jquery@1,lodash@2.4,knockout@3.0"></script>
     <script>
         var resume = {
             "resume": "resume.json"

@@ -68,7 +68,6 @@
 
         return $.when(
             $gitGet('users/' + gitSettings.user),
-            $gitGet('users/' + gitSettings.user + '/repos'),
             $gitGet('users/' + gitSettings.user + '/orgs'),
             $gitGet('search/issues', {
                 //get all closed pull requests from github user. We will have to check each PR to see if its merged and check commits
@@ -78,30 +77,15 @@
             })
         );
     })
-    .then(function(userInfo, repoInfo, organizations, pullRequests) {
+    .then(function(userInfo, organizations, pullRequests) {
         userInfo = userInfo[0];
-        var repos = _.filter(repoInfo[0], function(repo) {
-            return !_.contains(gitSettings['exclude repos'], repo.name) && (!repo.fork || repo.stargazers_count > 0 || repo.subscribers_count > 0);
-        });
+
         //update resume with user info
         // resumeModel.updateInfo(userInfo);
 
         githubModel = new GithubModel({
             user: userInfo,
-            repos: repos
-        });
-
-        _.each(repos, function(repo) {
-            $.when(
-                $gitGet(repo.url),
-                $gitGet(repo.contributors_url)
-            ).then(function(repoInfo, contribs) {
-                var contrib = _.findWhere(contribs[0], {login: gitSettings.user});
-                githubModel.updateRepo(repo, {
-                    subscribers_count: repoInfo[0].subscribers_count, //this is stupid. Can't get watchers from <user>/repos
-                    commits: contrib && contrib.contributions || 0
-                });
-            });//may 404 for repos with no commits
+            repos: []
         });
 
         _.each(organizations[0], function(org) {
@@ -135,8 +119,8 @@
                         $gitGet(pr.library + '/contributors') //I dont think these are paginated
                     ).then(function(libInfo, contribs) {
                         libInfo = libInfo[0];
-
-                        libInfo.contributions = libInfo.commits = _.findWhere(contribs[0], {login: gitSettings.user}).contributions;
+                        contribs = _.findWhere(contribs[0], {login: gitSettings.user});
+                        libInfo.contributions = libInfo.commits = _.result(contribs, 'contributions', 0);
                         libInfo.commitsUrl = libInfo.html_url + '/commits?author=' + gitSettings.user; //link to all of users commits
                         libInfo.updated_at = pr.updated_at;
 
@@ -146,10 +130,37 @@
                 } //else not merged
             }); //note may get 410 responses for deleted repos
         });
+
+        var pages = Math.ceil(userInfo.public_repos / 100);
+        for (; pages > 0; pages--) {
+            $gitGet('users/' + gitSettings.user + '/repos', {
+                per_page: 100,
+                page: pages
+            })
+            .then(function(repos) {
+                _(repos)
+                .filter(function(repo) {
+                    return !_.contains(gitSettings['exclude repos'], repo.name) && (!repo.fork || repo.stargazers_count > 0 || repo.subscribers_count > 0);
+                })
+                .each(githubModel.addRepo)
+                .each(function(repo) {
+                    $.when(
+                        $gitGet(repo.url),
+                        $gitGet(repo.contributors_url)
+                    ).then(function(repoInfo, contribs) {
+                        var contrib = _.findWhere(contribs[0], {login: gitSettings.user});
+                        githubModel.updateRepo(repo, {
+                            subscribers_count: repoInfo[0].subscribers_count, //this is stupid. Can't get watchers from <user>/repos
+                            commits: contrib && contrib.contributions || 0
+                        });
+                    });//may 404 for repos with no commits
+                }).value();
+            });
+        }
     });
 
     /*********************************
-     * Sortign
+     * Sorting
      *********************************/
     var today = Math.floor(_.now() / (24 * 60 * 60 * 1000));
     //collection of functions to assign a sorting value to a property
@@ -195,7 +206,7 @@
             if(!(key in repo)) repo[key] = def;
         });
         repo.commitsURL = repo.html_url + '/commits?author=' + gitSettings.user;
-        return repo;
+        return ko.observable(repo);
     };
 
     function Model(name) {
@@ -219,9 +230,7 @@
     function GithubModel(info) {
         var model = new Model('summary');
 
-        var repos = ko.observableArray(_.map(info.repos, function(repo) {
-            return ko.observable(processRepo(repo));
-        }));
+        var repos = ko.observableArray(_.map(info.repos, processRepo));
         var pulls = ko.observableArray();
         var orgs = ko.observableArray(info.organizations);
 
@@ -248,6 +257,11 @@
         model.addPull = function(pr) {
             pulls.push(processRepo(pr));
             sortRepos(pulls, gitSettings['sort pull weights']);
+        };
+
+        model.addRepo = function(repo) {
+            repos.push(processRepo(repo));
+            sortRepos(repos, gitSettings['sort pull weights']);
         };
 
         model.addOrganization = function(org) {

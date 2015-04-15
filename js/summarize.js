@@ -25,16 +25,15 @@
     var $gitGet = function(url, data) {
         url = urlify(url, GITHUB_API);
 
-        if(typeof data === 'object') {//do a custom encode to allow special characters eg x:y
+        if (typeof data === 'object') {//do a custom encode to allow special characters eg x:y
             data = $.map(data, function(val, prop) {
                 return prop + '=' + val;
             }).join('&');
         }
         
         //append access token
-        if(data) data += '&' + API_TOKEN;
+        if (data) data += '&' + API_TOKEN;
         else data = API_TOKEN;
-
 
         return $.ajax({
             url: url,
@@ -49,6 +48,17 @@
         });
     };
 
+    function iterPages(url, options, items, callback) {
+        var pages = Math.ceil(items / 100);
+        for (; pages > 0; pages--) {
+            $gitGet(url, _.extend({
+                per_page: 100,
+                page: pages
+            }, options))
+            .then(callback);
+        }
+    }
+
     var checked  = {};
 
     $.ajax({url: resume && resume.json || 'resume.json', dataType: 'text'})
@@ -59,10 +69,10 @@
         resumeModel = new ResumeModel(resume);
 
         //fill unset stuff
-        if(!gitSettings.user) {
+        if (!gitSettings.user) {
             //expects <username>.github.io
             var match = location.href.match(/([\w.-]+)\.github\.(io|com)/);
-            if(match) gitSettings.user = match[1];
+            if (match) gitSettings.user = match[1];
             else throw 'Could not parse the url for a Github username and none given in resume';
         }
 
@@ -96,7 +106,7 @@
             var match = pr.url.match(/repos\/([\w.-]+)\/([\w.-]+)\/issues/);
             var repo = match[2];
 
-            if(match[1] !== gitSettings.user && !_.contains(gitSettings['exclude repos'], repo)) { //exclude users, checked and excluded repos
+            if (match[1] !== gitSettings.user && !_.contains(gitSettings['exclude repos'], repo)) { //exclude users, checked and excluded repos
                 pr.library = pr.url.slice(0, pr.url.indexOf('/issues')); //add library url
                 pr.repo = repo;
                 return pr;
@@ -110,9 +120,9 @@
                 var merged = _.findWhere(events, {event: 'merged'});
 
                 //only keep 1 pr per repo but keep lastest merged
-                if(old && merged && Date.parse(pr.updated_at) > Date.parse(old.updated_at)) old.updated_at = pr.updated_at;
+                if (old && merged && Date.parse(pr.updated_at) > Date.parse(old.updated_at)) old.updated_at = pr.updated_at;
                 
-                if(!old && merged) {
+                if (!old && merged) {
                     checked[pr.repo] = pr;
                     $.when(
                         $gitGet(pr.library),
@@ -131,32 +141,26 @@
             }); //note may get 410 responses for deleted repos
         });
 
-        var pages = Math.ceil(userInfo.public_repos / 100);
-        for (; pages > 0; pages--) {
-            $gitGet('users/' + gitSettings.user + '/repos', {
-                per_page: 100,
-                page: pages
+        var reposUrl = 'users/' + gitSettings.user + '/repos';
+        iterPages(reposUrl, {}, userInfo.public_repos, function(repos) {
+            _(repos)
+            .filter(function(repo) {
+                return !_.contains(gitSettings['exclude repos'], repo.name) && (!repo.fork || repo.stargazers_count > 0 || repo.subscribers_count > 0);
             })
-            .then(function(repos) {
-                _(repos)
-                .filter(function(repo) {
-                    return !_.contains(gitSettings['exclude repos'], repo.name) && (!repo.fork || repo.stargazers_count > 0 || repo.subscribers_count > 0);
-                })
-                .each(githubModel.addRepo)
-                .each(function(repo) {
-                    $.when(
-                        $gitGet(repo.url),
-                        $gitGet(repo.contributors_url)
-                    ).then(function(repoInfo, contribs) {
-                        var contrib = _.findWhere(contribs[0], {login: gitSettings.user});
-                        githubModel.updateRepo(repo, {
-                            subscribers_count: repoInfo[0].subscribers_count, //this is stupid. Can't get watchers from <user>/repos
-                            commits: contrib && contrib.contributions || 0
-                        });
-                    });//may 404 for repos with no commits
-                }).value();
-            });
-        }
+            .each(githubModel.addRepo)
+            .each(function(repo) {
+                $.when(
+                    $gitGet(repo.url),
+                    $gitGet(repo.contributors_url)
+                ).then(function(repoInfo, contribs) {
+                    var contrib = _.findWhere(contribs[0], {login: gitSettings.user});
+                    githubModel.updateRepo(repo, {
+                        subscribers_count: repoInfo[0].subscribers_count, //this is stupid. Can't get watchers from <user>/repos
+                        commits: contrib && contrib.contributions || 0
+                    });
+                });//may 404 for repos with no commits
+            }).value();
+        });
     });
 
     /*********************************
@@ -183,7 +187,7 @@
         var weight = function(repo) {
             var _repo = ko.isObservable(repo) ? repo() : repo; //unwrap
             return _.reduce(weights, function(weight, val, prop) {
-                if(val) weight += sortMap[prop](_repo, val) || 0; //lazily handle NaN
+                if (val) weight += sortMap[prop](_repo, val) || 0; //lazily handle NaN
                 return weight;
             }, 0);
         };
@@ -198,12 +202,10 @@
      *********************************/
 
     var processRepo = function(repo) {
-        _.each({//default settings
-            subscribers_count: 1,
+        _.defaults(repo, {
+            subscribers_count: 0,
             stargazers_count: 0,
-            commits: 1
-        }, function(def, key) {
-            if(!(key in repo)) repo[key] = def;
+            commits: 0
         });
         repo.commitsURL = repo.html_url + '/commits?author=' + gitSettings.user;
         return ko.observable(repo);
@@ -249,7 +251,8 @@
         }, orgs);
 
         model.updateRepo = function(repo, updated) {
-            var obs = _.find(repos(), function(r) {return r() === repo;});//find repo's obserable
+            //find repo's observable
+            var obs = _.find(repos(), function(r) {return r() === repo;});
             obs(_.extend(repo, updated));//and update
             sortRepos(repos, gitSettings['sort repo weights']);
         };
@@ -285,7 +288,7 @@
             })
         }, resume);
 
-        document.title = 'Résumé of '  + resume.name;
+        document.title = 'Résumé of ' + resume.name;
 
         return model.update();
     }

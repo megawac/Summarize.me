@@ -29,59 +29,88 @@
 
     //most of these are optional beside some of the obvious
     "name": "Graeme J. Yeates",
-    "title": "Web Developer/GIS Specialist",
-    "phone": "(647) 215-7372",
-    "contact": "gjyeates@uwaterloo.ca",
+    "title": "Geospatial Engineer / Robotics Visualization Specialist",
+    "phone": "(418) 587-3258",
+    "contact": "yeatesgreame@gmail.com",
     "portfolio": "www.github.com/megawac",
-    "objective": "Geographic information systems (GIS) internship that allows me to integrate my knowledge of web development and databases with my skills in GIS.",
+    "objective": "Geospatial engineer with 10 years' experience building real-time visualization and telemetry systems for warehouse robotics. Experienced in architecting fleet↔server synchronization, designing robotic controller interfaces, and creating operational dashboards that improve visibility and decision-making. Skilled in spatial data modeling, streaming telemetry, and performance optimization for large-scale automation deployments.",
     "social": [
         {
             "link": "https://github.com/megawac",
             "name": "github.com/megawac"
         },
         {
-            "link": "mail://gjyeates@uwaterloo.ca",
-            "name": "gjyeates@uwaterloo.ca"
+            "link": "mail://yeatesgreame@gmail.com",
+            "name": "yeatesgreame@gmail.com"
         },
         {
-            "link": "tel://6472157372",
-            "name": "(647) 215-7372"
+            "link": "tel://4185873258",
+            "name": "(418) 587-3258"
         }
     ],
     "skills": [
-        "JavaScript/Node.js", "HTML5", "CSS3", "ESRI ArcGIS", "SQL", "Python", "Java", "ASP.NET with VB & C#", "GIT & TFS Source Control"
+        "Geospatial engineering",
+        "Real-time telemetry & fleet synchronization",
+        "Robotics interfaces (APIs, ROS, MQTT)",
+        "JS/TS",
+        "Python",
+        "C++",
+        "AI/ML workflows",
+        "R",
+        "Testing & CI workflows",
+        "Kubernetes"
     ],
     "frameworks": [
-        "Mootools", "jQuery", "dojo", "ArcGIS SDKs", "Python Twisted", "Express.js", "Socket.io", "Grunt", "Twitter Bootstrap"
+        "React",
+        "OpenLayers",
+        "Mapbox",
+        "Antd"
     ],
     "projects": [
         {
             "name": "MutationObserver.js",
-            "technologies": "QUnit, Grunt, Travis CI, PhantomJS, Sauce Labs",
-            "description": "Created a (reasonably) compliant and well optimized shim of the HTML5 MutationObserver using a novel tree reconciliation algorithm. Created 50+ QUnit tests for the polyfill."
+            "technologies": "QUnit, Sauce Labs",
+            "description": "This is an early work of mine for a Marionette project which I am still very proud of. Created a (reasonably) compliant and well optimized shim of the HTML5 MutationObserver using a novel tree reconciliation algorithm. Followed TDD with an extensive suite of tests across a large suite of browsers."
         },
-        {
+         {
             "name": "QwebIRC",
-            "technologies": "Mootools, Twitter Bootstrap, Epitome MVC, Handlebars, Grunt, socket.io, underscore, CSS3, HTML5",
-            "description": "QwebIRC is a free, open source AJAX instant relay chat (IRC) client designed to be simple, feature-rich, and intuitive. I've improved the extensibility and functionality of the original QwebIRC project by abstracting the browser hacks to frameworks and modules, rewriting the entire user interface (UI) in templated Views, decoupling of the IRC client from the UI and making the code DRY by extending the utility module. The changes have removed unnessary relationships and made adding features less trivial."
+            "technologies": "socket.io, Express, underscore, Mootools",
+            "description": "This was an IRC client I developed in University for my friends. I completely reimplemented the front end with many enhancements, had a new backend in node following RFC2813, and adjusted all connections to go through the new backend."
         },
-        {
-            "name": "Node WebIRC",
-            "technologies": "socket.io, Express, underscore",
-            "description": "An IRC Connection backend for the QwebIRC AJAX client. This project is responsible for serving files to the AJAX client and establishing IPv4 or IPv6 connections to a set IRC server and serve data via socket.io."
-        },
-        {
-            "name": "Python WebIRC",
-            "technologies": "Twisted, Zope Interface",
-            "description": "Simplified the Iris/QwebIRC python server and implemented the Ident dameon protocol for connecting to some IRC servers."
-        },
-        {
-            "name": "Epitome MVC",
-            "technologies": "Mootools, BusterJS",
-            "description": "Contributor to the framework. Improved the functionality of model properties and provided two solutions to passing events with an array in the arguments"
-        }
+         {
+            "name": "snowve",
+            "technologies": ["C++", "lua", "grafana"],
+            "description": "A highly competitive mod I maintain for Civilization 5. I've implemented many new features, including an analytics engine."
+         }
     ],
     "experience": [
+        {
+            "company": "Clearpath/OTTO Motors/Rockwell Automation",
+            "title": "Senior Software Engineer",
+            "startDate": "May 2016",
+            "endDate": "October 2025",
+            "technologies": "React, Openlayers, Mapbox, Antd, JS/TS, Python, C++, Kubernetes",
+            "responsibilities": "I designed and implemented mapping solutions to visualize real time telemetry for large fleets. Created advanced vector interactions to configure how vehicles navigate facilities. Implemented and maintained data synchronization, history management solutions, and various other components of OTTO's fleet management system. I worked closely with product managers and designers on scoping our releases and budgeting customer requests.",
+            "achievements": "I mentored several developers and had a significant impact on the team's technical directions. I performed performance audits to allow our fleet management system to scale to handle data from hundreds of vehicles in real time."
+        },
+        {
+            "company": "Majik Systems",
+            "title": "Software Engineer",
+            "startDate": "October 2015",
+            "endDate": "May 2016",
+            "technologies": "Marionette, socket.io",
+            "responsibilities": "I created synchronization services to ensure Backbone and Marionette models stayed in sync with a socket.io server.",
+            "achievements": "I ensured our service could be provided on at least 100 concurrent plc connections feeding vast analytics data to the front end."
+        },
+        {
+            "company": "Echostream (future by Clearpath)",
+            "title": "Surveyor",
+            "startDate": "May 2014",
+            "endDate": "December 2014",
+            "technologies": "JS, ARCGIS, Python, ROS, Leaflet, SQL",
+            "responsibilities": "I was first response on processing survey data from surveyors using KingFisher boats for conducting bathymetric surveys.",
+            "achievements": "I implemented the mechanisms to record the surveys accurately on with an RTK base station. I created frameworks which later went on to become default tooling for most OTTO frontends."
+        },
         {
             "company": "CESI Environment Canada",
             "link": "http://maps-cartes.ec.gc.ca/indicators-indicateurs",
@@ -105,11 +134,11 @@
         {
             "institute": "University of Waterloo",
             "startDate": "2011",
-            "endDate": "present",
+            "endDate": "2016",
             "program": "Geomatics with Computer Science minor",
-            "achievements": "Dean's list from 2011-2012"
+            "achievements": "Dean's list from 2011-2014"
         }
     ],
-    "lastupdate": "15-01-2013",
+    "lastupdate": "2025-10-10",
     "resume": "http://megawac.github.io"
 }

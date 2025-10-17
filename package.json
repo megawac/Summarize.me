@@ -12,23 +12,32 @@
     "resume",
     "github"
   ],
-  "dependencies": {},
+  "type": "module",
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "matchdep": "~0.1.1",
-    "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-connect": "~0.2.0",
-    "connect-livereload": "~0.1.4",
-    "grunt-contrib-watch": "~0.4.0",
-    "grunt-open": "~0.2.0",
-    "grunt-contrib-csslint": "~0.2.0",
-    "grunt-csscomb": "~2.0.1",
-    "grunt-contrib-less": "~0.9.0",
-    "grunt-contrib-cssmin": "~0.7.0",
-    "grunt-autoprefixer": "~0.6.4",
-    "grunt-html-build": "~0.3.1",
-    "grunt-bumpup": "~0.5.0",
-    "grunt-tagrelease": "~0.3.1"
+    "@types/jquery": "^3.5.18",
+    "@types/knockout": "^3.4.71",
+    "autoprefixer": "^10.4.0",
+    "chokidar": "^3.5.3",
+    "csscomb": "^4.0.0",
+    "csslint": "^1.0.5",
+    "fast-glob": "^3.3.2",
+    "jshint": "^2.13.4",
+    "less": "^4.1.4",
+    "live-server": "^1.2.2",
+    "postcss": "^8.4.0",
+    "typescript": "^5.4.0"
+  },
+  "scripts": {
+    "build": "bun run scripts/bun-tasks.js build",
+    "test": "bun run scripts/bun-tasks.js test",
+    "lint": "bun run scripts/bun-tasks.js lint",
+    "server": "bun run scripts/bun-tasks.js server",
+    "watch": "bun run scripts/bun-tasks.js watch",
+    "build:node": "node scripts/bun-tasks.js build",
+    "test:node": "node scripts/bun-tasks.js test",
+    "lint:node": "node scripts/bun-tasks.js lint",
+    "server:node": "node scripts/bun-tasks.js server",
+    "watch:node": "node scripts/bun-tasks.js watch"
   },
   "engines": {
     "node": ">=0.8.0"

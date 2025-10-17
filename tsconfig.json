@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "none",
+    "lib": ["DOM", "ES2020"],
+    "strict": true,
+    "rootDir": "src",
+    "outDir": "js",
+    "noEmitOnError": true,
+    "esModuleInterop": false,
+    "skipLibCheck": true,
+    "types": ["jquery", "knockout"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "types/**/*.d.ts"
+  ]
+}

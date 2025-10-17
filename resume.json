@@ -98,18 +98,18 @@
             "title": "Software Engineer",
             "startDate": "October 2015",
             "endDate": "May 2016",
-            "technologies": "Marionette, socket.io",
+            "technologies": "Marionette, socket.io, MongoDB",
             "responsibilities": "I created synchronization services to ensure Backbone and Marionette models stayed in sync with a socket.io server.",
             "achievements": "I ensured our service could be provided on at least 100 concurrent plc connections feeding vast analytics data to the front end."
         },
         {
             "company": "Echostream (future by Clearpath)",
-            "title": "Surveyor",
+            "title": "Applications Developer/Surveyor",
             "startDate": "May 2014",
             "endDate": "December 2014",
-            "technologies": "JS, ARCGIS, Python, ROS, Leaflet, SQL",
-            "responsibilities": "I was first response on processing survey data from surveyors using KingFisher boats for conducting bathymetric surveys.",
-            "achievements": "I implemented the mechanisms to record the surveys accurately on with an RTK base station. I created frameworks which later went on to become default tooling for most OTTO frontends."
+            "technologies": "ArcGIS, JS, Python, ROS, Leaflet, SQL, HyPack",
+            "responsibilities": "Conducted bathymetric surveys using unmanned surface vehicles (USV). I processed survey data from client surveyors using our USVs for conducting bathymetric surveys.",
+            "achievements": "I implemented the algorithms to process bathymetric survey data into triangulated irregular networks. Documented the key criteria of what an ideal hydrographic software should offer surveyors using USVs. I created a remote control application for controlling any OTTO vehicle from a web app."
         },
         {
             "company": "CESI Environment Canada",
@@ -126,8 +126,8 @@
             "startDate": "May 2012",
             "endDate": "August 2012",
             "technologies": "Java, SQL",
-            "responsibilities": "Built custom, data driven financial applications using Java for coworkers. These applications had to keep up to date with multiple, periodically updated SQL databases on different servers. Respond to technical questions and provide solutions to problems.",
-            "achievements": "Commensed merge of a relatively large Microsoft Access 2000 database into a database in the main Microsoft SQL 2005 server. Created and maintained several SQL databases."
+            "responsibilities": "Built custom, data driven financial applications using Java for coworkers. These applications had to keep up to date with multiple, periodically updated SQL databases on foreign servers. Respond to technical questions and provide solutions to problems.",
+            "achievements": "Commensed merge of a large Microsoft Access 2000 database into a Microsoft SQL 2005 server. Created and maintained several SQL databases."
         }
     ],
     "education": [

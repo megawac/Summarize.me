@@ -1,8 +1,7 @@
 {
     "node": true,
     "browser": true,
-    "esnext": true,
-    "es3": true,
+    "esversion": 11,
     "bitwise": true,
     "camelcase": false,
     "curly": false,
@@ -11,11 +10,12 @@
     "latedef": true,
     "newcap": true,
     "noarg": true,
-    "quotmark": "single",
+    "quotmark": false,
     "regexp": true,
     "undef": true,
     "unused": true,
     "strict": true,
+    "loopfunc": true,
     "trailing": true,
     "smarttabs": false,
 
@@ -26,6 +26,11 @@
         "Hogan": true,
         "fallback": true,
         "_": true,
-        "ko": true
+        "ko": true,
+        "resume": true,
+        "JSON": true,
+        "Promise": true,
+        "Map": true,
+        "Set": true
     }
 }

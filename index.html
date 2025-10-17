@@ -11,11 +11,6 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/summarize.css">
     <link rel="stylesheet" href="css/print.css" media="print">
-
-    <!--[if lt IE 9]>
-        <script src="js/vendor/html5shiv.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body>
     <div id="resume" class="col-md-12 col-lg-8 resume">
@@ -221,7 +216,7 @@
     <noscript>
         <strong>Thanks for viewing my resume, but it is generated via Javascript templates &#9477; Please enable JS to view my resume</strong>
     </noscript>
-    <script src="js/vendor/minify-json.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/jsonminify@0.4.2/minify.json.min.js"></script>
     <script src="//cdn.jsdelivr.net/g/jquery@1,lodash@2.4,knockout@3.0"></script>
     <script>
         var resume = {
@@ -229,6 +224,6 @@
         }
     </script>
     <script src="js/summarize.js"></script>
-
+    <!-- build:remove --><script src="//localhost:35729/livereload.js"></script><!-- /build -->
 </body>
 </html>

@@ -16,3 +16,25 @@ The simplest way to create some Github pages for yourself is to follow the steps
 
 
 Yo heads up, this makes a bunch of API calls. The summary generated for Paul Irish needed about 225 requests and retrieved 400KB of data. I'm actively trying to reduce these figs.
+
+## Development tasks (Bun)
+
+This project includes a small Bun/Node task runner that replaces the previous Grunt setup.
+
+- Build: `bun run scripts/bun-tasks.js build` (or `npm run build:node` after installing dev deps)
+- Test: `bun run scripts/bun-tasks.js test`
+- Lint: `bun run scripts/bun-tasks.js lint`
+- Server + watch: `bun run scripts/bun-tasks.js server`
+
+TypeScript sources live under `src/` and compile into `js/` via the build task. Any edits to `src/**/*.ts` or `resume.json` will trigger recompilation when running the watcher.
+
+If you don't have Bun installed you can run the scripts with Node after installing dev dependencies:
+
+```bash
+npm install
+npm run build:node
+# or for linting without Bun
+npm run lint:node
+# optional: live reload
+npm run watch:node
+```

@@ -14,30 +14,21 @@
   ],
   "type": "module",
   "devDependencies": {
+    "@parcel/config-default": "^2.12.0",
+    "@parcel/transformer-less": "^2.12.0",
+    "@parcel/transformer-raw": "^2.12.0",
+    "@parcel/transformer-typescript-tsc": "^2.12.0",
     "@types/jquery": "^3.5.18",
     "@types/knockout": "^3.4.71",
-    "autoprefixer": "^10.4.0",
-    "chokidar": "^3.5.3",
-    "csscomb": "^4.0.0",
-    "csslint": "^1.0.5",
-    "fast-glob": "^3.3.2",
-    "jshint": "^2.13.4",
-    "less": "^4.1.4",
-    "live-server": "^1.2.2",
-    "postcss": "^8.4.0",
+    "parcel": "^2.12.0",
     "typescript": "^5.4.0"
   },
   "scripts": {
-    "build": "bun run scripts/bun-tasks.js build",
-    "test": "bun run scripts/bun-tasks.js test",
-    "lint": "bun run scripts/bun-tasks.js lint",
-    "server": "bun run scripts/bun-tasks.js server",
-    "watch": "bun run scripts/bun-tasks.js watch",
-    "build:node": "node scripts/bun-tasks.js build",
-    "test:node": "node scripts/bun-tasks.js test",
-    "lint:node": "node scripts/bun-tasks.js lint",
-    "server:node": "node scripts/bun-tasks.js server",
-    "watch:node": "node scripts/bun-tasks.js watch"
+    "dev": "parcel index.html --port 9000 --host 0.0.0.0 --open false",
+    "build": "parcel build index.html --dist-dir dist --public-url ./",
+    "watch": "parcel index.html --port 9000 --host 0.0.0.0 --open false",
+    "clean": "rm -rf dist .parcel-cache",
+    "preview": "parcel serve dist/index.html --port 8080"
   },
   "engines": {
     "node": ">=0.8.0"
